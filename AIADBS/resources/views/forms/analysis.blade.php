@@ -149,6 +149,7 @@
                 $("table tbody").append("<tr><th scope='row' style='width:4%;' name='table_id' value='"+value+"'>"+i+"</th><td tyle='width:7%;'><input type='number' min='0' max='"+nums+"' class='form-control' name='PH[]'  id=''></td><td tyle='width:7%;'><input type='number' min='0' max='"+nums+"' class='input-color-secondary form-control' name='PL[]'  id=''></td><td id='proPH"+i+"'></td><td id='proPL"+i+"'><td name='descIndex"+i+"'></td><td name='descRem"+i+"'></td></td><td name='diffIndex"+i+"'></td><td name='diffRem"+i+"'></td><td name='finalRem"+i+"'></td></tr>");
                 i++;
             }); 
+           
         });
 
         

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Test;
+use App\Models\Set;
+use App\Models\Item;
 use App\Http\Requests\StoreTestRequest;
 use App\Http\Requests\UpdateTestRequest;
 use Illuminate\Http\Request;
@@ -96,9 +98,27 @@ class TestController extends Controller
      * @param  \App\Models\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function show(Test $test)
+    public function show(Test $test,$id)
     {
         //
+        $test = $test->find($id);
+        $sets = Set::select('id','set_name','num_of_items')->where('test_id', $id)->get();
+        $setIds = $sets->pluck('id');
+        $items = array();
+        foreach ($setIds as $setId){
+            $item = Item::where('set_id', $setId)->get();
+            $subset = $item->map(function ($item){
+                return collect($item->toArray())
+                ->only('id','item_number','item_string','set_id')
+                ->all();
+            });
+            $items[$setId] = $subset;
+        }
+        
+        
+        //dd($test,$sets,$items);
+        return view('forms.test_show', ['tests' => $test, 'sets' => $sets, 'items' => $items]);
+        
     }
 
     /**

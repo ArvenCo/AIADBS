@@ -37,7 +37,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table table-dark table-bordered table-hover">
+                            <table id="example1" class="table table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -51,7 +51,7 @@
                                 <th></th>
                             </tr>
                             </thead>
-                            <tbody style="color:white;">
+                            <tbody style=";">
                             @foreach($tests as $test)
                               <tr>
                                 <td>{{$test->id}}</td>
@@ -60,12 +60,15 @@
                                 <td>{{$test->course}}</td>
                                 <td>{{$test->date_given}}</td>
                                 <td>{{$test->num_of_students}}</td>
-                                <td>
+                                <td class="">
                                   <a href="analysis/create/{{$test->id}}"  class="btn btn-info btn-xs"> 
-                                    <i class="fas fa-chart-bar"></i>
+                                    <i class="fas fa-chart-bar text-white"></i>
                                   </a>
-                                  <a href="" class="btn btn-info btn-xs">
-                                    <i class="fas fa-print"></i>
+                                  <a href="analysis/show/{{$test->id}}" class="btn btn-info btn-xs">
+                                    <i class="fas fa-print text-white"></i>
+                                  </a>
+                                  <a href="test/show/{{$test->id}}" class="btn btn-info btn-xs">
+                                    <i class="fas fa-edit text-white"></i>
                                   </a>
                                 </td>
                               </tr>

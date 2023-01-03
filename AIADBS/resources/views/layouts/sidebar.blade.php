@@ -29,7 +29,7 @@
             with font-awesome or any other icon font library -->
 
         <li class="nav-item">
-            <a href="/tests" class="nav-link {{ (request()->is('tests')) ? 'active' : '' }}">
+            <a href="{{ (request()->is('test')) ? '' : '/test' }}" class="nav-link {{ (request()->is('test')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-solid fa-user"></i>
                 <p>
                     Test

@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
   @yield('head')
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
   <!-- Preloader -->

@@ -20,13 +20,13 @@ Route::middleware('auth')->get('/', function () {
 
 
 
-Route::middleware('auth')->get('/tests', [App\Http\Controllers\TestController::class, 'index']);
+Route::middleware('auth')->get('/test', [App\Http\Controllers\TestController::class, 'index']);
 Route::middleware('auth')->get('/test/create', function(){
     return view('forms.test_create');
 });
 
 Route::middleware('auth')->post('/test', [App\Http\Controllers\TestController::class, 'store']);
-
+Route::middleware('auth')->get('/test/show/{id}',[App\Http\Controllers\TestController::class, 'show']);
 Route::middleware('auth')->get('/analysis',function(){
     return view('forms.analysis');
 });
@@ -35,6 +35,7 @@ Route::middleware('auth')->post('/analysis', [App\Http\Controllers\RemarkControl
 
 
 Route::middleware('auth')->get('/analysis/create/{id}',[App\Http\Controllers\RemarkController::class,'create']);
+Route::middleware('auth')->get('/analysis/show/{id}',[App\Http\Controllers\RemarkController::class,'show']);
 
 Auth::routes(); 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('main');   

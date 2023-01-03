@@ -45,7 +45,7 @@ class RemarkController extends Controller
 
             $setArray[$setId] = $itemsArray;
         }
-        return view('forms.analysis', ['sets'=>$sets, 'setItems' => $setArray, 'tests' => $tests]);
+        return view('forms.analysis', ['sets'=> $sets, 'setItems' => $setArray, 'tests' => $tests]);
     }
 
     /**
@@ -112,19 +112,46 @@ class RemarkController extends Controller
         $tests = Test::find($id);
         $sets = Set::where('test_id',$id)->get();
         
-        $setArray = [];
+
+        $setItems = [];
+        $itemRemark = [];
+
         foreach($sets as $set){
             $setId = $set->id;
             $items = Item::where('set_id' ,$setId)->get();
             $itemsArray = [];
+            $itemMisc = [];    
             foreach ($items as $item){
+                $data = [];
+                $data = Remark::rightJoin('items','items.id','=','item_id')->where('item_id',$item->id)->get();
+                $subset = $data->map(function($data){
+                    return collect($data->toArray())
+                    ->all();
+                });
                 
-                array_push($itemsArray ,$item->id);
+                $itemMisc = [
+                    'ph' => $data->first()->ph,
+                    'pl' => $data->first()->pl,
+                    'pro_ph' => $data->first()->pro_ph,
+                    'pro_pl' => $data->first()->pro_pl,
+                    'desc_index' => $data->first()->desc_index,
+                    'diff_index' => $data->first()->diff_index,
+                    'desc_inter' => $this->getDescInter($data->first()->desc_index),
+                    'diff_inter' => $this->getDiffInter($data->first()->diff_index),
+                    'final_rem' => $data->first()->final_rem,
+                ];
+                
+                $itemRemark[$item->item_number] = $subset;
+                array_push($itemsArray ,$itemMisc);
+                
             }
 
-            $setArray[$setId] = $itemsArray;
+            $setItems[$setId] = $itemsArray;
+            
+            
         }
-        return view('forms.print', ['sets'=>$sets, 'setItems' => $setArray, 'tests' => $tests]);
+        //dd(['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests, 'itemRemark' => $itemRemark, 'itemsMisc' => $itemMisc]);
+        return view('forms.analysis_print', ['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests]);
     }
 
     /**
