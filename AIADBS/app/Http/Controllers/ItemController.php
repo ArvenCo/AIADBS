@@ -67,9 +67,12 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, Item $item,$id)
     {
         //
+        Item::where('id',$id)
+        ->update( ['item_string' => $request->input('item')]);
+        return back()->with('success', 'Item updated successfully');
     }
 
     /**

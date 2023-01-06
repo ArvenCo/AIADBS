@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
+
+use Illuminate\Routing\Route;
+
 use Carbon\Carbon;
 class TestController extends Controller
 {
@@ -24,11 +28,14 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $test = Test::all();
-        return view('forms.test_index', ['tests' =>$test]);
+        $uri =$request->route()->uri();
+        
+        
+        return view('forms.test_index', ['tests' =>$test, 'uri' => $uri]);
         
     }
 
@@ -37,10 +44,13 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         //
-        return view('forms.test'); 
+        $test = Test::find($id);
+        
+
+        return view('forms.test_create_set',['test' => $test]); 
         
     }
 
@@ -127,9 +137,18 @@ class TestController extends Controller
      * @param  \App\Models\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function edit(Test $test)
+    public function edit(Test $test,Request $request, $id)
     {
         //
+        $test->where('id', $id)->update([
+            'subject' => $request->input('subject'),
+            'examination' => $request->input('examination'),
+            'course' => $request->input('course'),
+            'date_given' => $request->input('date_given'),
+            'num_of_students' => $request->input('num_of_students')
+          ]);
+
+        return back()->with('success','Test successfuly edited.');
     }
 
     /**
@@ -139,9 +158,29 @@ class TestController extends Controller
      * @param  \App\Models\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTestRequest $request, Test $test)
+    public function update(Request $request, Test $test, $id)
     {
         //
+        $items = $this->parseIndexedString($request->input('textarea'));
+        
+        $setId = DB::table('sets')->insertGetId([
+            'set_name' => $request->input('set'),
+            'num_of_items' => count($items),
+            'test_id' => $id,
+            'created_at' => now()
+        ]);
+        
+        $index = 1;
+        foreach ($items as $item){
+            DB::table('items')->insert([
+                'item_number' => $index,
+                'item_string' => $item,
+                'set_id' => $setId,
+                'created_at' => now()
+            ]);
+            $index++;
+        }
+        return redirect()->back()->with('success','Set added successfully.');
     }
 
     /**

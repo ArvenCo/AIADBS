@@ -20,6 +20,7 @@ class RemarkController extends Controller
     public function index()
     {
         //
+
     }
 
     /**
@@ -31,7 +32,11 @@ class RemarkController extends Controller
     {
         //
         $tests = Test::find($id);
-        $sets = Set::where('test_id',$id)->get();
+        $sets = Set::leftjoin('items','sets.id','=', 'items.set_id' )
+        ->leftjoin('remarks', 'items.id', '=', 'remarks.item_id')
+        ->where('test_id', '=', $id)->where('remarks.id', '=', null)
+        ->select('sets.id','set_name',DB::raw('count(*) as total'))
+        ->groupby('sets.id','set_name')->get();
         
         $setArray = [];
         foreach($sets as $set){
@@ -98,7 +103,7 @@ class RemarkController extends Controller
             $index++;
         }
         Remark::insert($data);
-        return redirect('/test')->with('success','Item analysis saved successfully.');
+        return back()->with('success','Item analysis saved successfully.');
     }
     /**
      * Display the specified resource.
@@ -106,11 +111,16 @@ class RemarkController extends Controller
      * @param  \App\Models\Remark  $remark
      * @return \Illuminate\Http\Response
      */
-    public function show(Remark $remark, $id)
+    public function show(Request $request,Remark $remark, $id)
     {
         //
         $tests = Test::find($id);
-        $sets = Set::where('test_id',$id)->get();
+        $sets = Set::rightjoin('items', 'sets.id','=', 'items.set_id')
+        ->rightjoin('remarks', 'items.id', '=', 'remarks.item_id')
+        ->where('test_id', '=', $id)
+        ->select('sets.id','set_name',DB::raw('count(*) as total'))
+        ->groupby('sets.id','set_name')
+        ->get();
         
 
         $setItems = [];
@@ -128,8 +138,11 @@ class RemarkController extends Controller
                     return collect($data->toArray())
                     ->all();
                 });
-                
+                if ($data->isEmpty()) {
+                  continue;
+                }
                 $itemMisc = [
+                    'id' => $data->first()->id,
                     'ph' => $data->first()->ph,
                     'pl' => $data->first()->pl,
                     'pro_ph' => $data->first()->pro_ph,
@@ -151,7 +164,14 @@ class RemarkController extends Controller
             
         }
         //dd(['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests, 'itemRemark' => $itemRemark, 'itemsMisc' => $itemMisc]);
-        return view('forms.analysis_print', ['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests]);
+        $uri = $request->route()->uri();
+        if ($uri == "analysis/{id}"){
+          return view('forms.analysis_edit', ['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests]);
+        }else{
+          return view('forms.analysis_print', ['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests]);
+        }
+
+        
     }
 
     /**
@@ -160,9 +180,19 @@ class RemarkController extends Controller
      * @param  \App\Models\Remark  $remark
      * @return \Illuminate\Http\Response
      */
-    public function edit(Remark $remark)
+    public function edit(Request $request,Remark $remark, $id)
     {
-        //  
+        //
+        # Show the form for editing the specified resource
+        // $sets = Set::rightjoin('items', 'sets.id','=', 'items.set_id')
+        // ->rightjoin('remarks', 'items.id', '=', 'remarks.item_id')
+        // ->where('test_id', '=', $id)
+        // ->select('sets.id','set_name',DB::raw('count(*) as total'))
+        // ->groupby('sets.id','set_name')
+        // ->get();
+        
+
+        dd();
     }
 
     /**
@@ -175,6 +205,46 @@ class RemarkController extends Controller
     public function update(Request $request, Remark $remark)
     {
         //
+        $numS = $this->getSample($request->input('nums'));
+        
+        $items = Item::where('set_id' ,$request->input('selectedSet'))->get();
+
+        $ids = $request->input('id');
+        $phs = $request->input('PH');
+        $pls = $request->input('PL');
+        $index = 0;
+        $data = [];
+        foreach ($items as $item){
+            $id = $ids[$index];
+            $ph = $phs[$index];
+            $pl = $pls[$index];
+            $proPh = $ph/$numS;
+            $proPl = $pl/$numS;
+
+            $descIndex = number_format($this->getDescIndex($proPh, $proPl),4);
+            $diffIndex = number_format($this->getDiffIndex($proPh, $proPl),4);
+            
+            $descInter = $this->getDescInter($descIndex);
+            $diffInter = $this->getDiffInter($diffIndex);
+
+            $finalRem = $this->getFinalRemark($descInter,$diffInter);
+            
+            
+            Remark::where('id', $id)->update([
+                
+              'ph' => $ph,
+              'pl' => $pl,
+              'pro_ph' => $proPh,
+              'pro_pl' => $proPl,
+              'desc_index' => $descIndex,
+              'diff_index' => $diffIndex,
+              'final_rem' => $finalRem,
+              
+
+          ]);
+            $index++;
+        }
+        return back()->with('success','Remark updated successfully.');
     }
 
     /**

@@ -37,7 +37,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="/analysis" class="nav-link {{ (request()->is('analysis')) ? 'active' : '' }}">
+            <a href="/analysis_list" class="nav-link {{ (request()->is('analysis_list')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-images"></i>
                 <p>
                     Analysis
@@ -45,69 +45,17 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="/attendance" class="nav-link {{ (request()->is('attendance')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-clock"></i>
+            <a href="/print" class="nav-link {{ (request()->is('print')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-print"></i>
                 <p>
-                    Time In
+                    Print
                 </p>
             </a>
         </li>
-        <!-- Gate  w/Dropdown-->
-        @php
-            $gatePage = (request()->is('gate/register')) || (request()->is('gate/lists')) ? true : false;
-        @endphp
-        <li class="nav-item {{ $gatePage ? 'menu-is-open menu-open' : '' }}">
-            <a href="#" class="nav-link {{ $gatePage ? 'active' : '' }}">
-              <i class="nav-icon fa-solid fa-person-military-pointing"></i>
-              <p>
-                Gates
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/gate/lists" class="nav-link {{ (request()->is('gate/lists')) ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Gate Lists</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/gate/register" class="nav-link {{ (request()->is('gate/register')) ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Register Gate</p>
-                    </a>
-                </li>
-              
-            </ul>
-        </li>
+        
+        
 
-        @php
-            $page = (request()->is('sms/sent_messages')) || (request()->is('sms/inbox')) ? true : false;
-        @endphp
-        <li class="nav-item {{ $page ? 'menu-is-open menu-open' : '' }}">
-            <a href="#" class="nav-link {{ $page ? 'active' : '' }}">
-              <i class="nav-icon fas fa-message"></i>
-              <p>
-                SMS
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/sms/inbox" class="nav-link {{ (request()->is('sms/inbox')) ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Inbox</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/sms/sent_messages" class="nav-link {{ (request()->is('sms/sent_messages')) ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Sent Messages</p>
-                    </a>
-                </li>
-                
-            </ul>
-        </li>
+        
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

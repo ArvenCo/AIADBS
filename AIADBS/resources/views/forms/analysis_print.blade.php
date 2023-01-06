@@ -418,10 +418,11 @@
             
             var items = @json($setItems);
             var i = 1;
+            if (items[$(this).val()].length == 0) return alert('No data available.')
             $("table tbody[name='main']").empty();
             $.each(items[$(this).val()],function(key, value){
                 
-                $("table tbody[name='main']").append("<tr id='tr"+i+"'><th scope='row' style='width:4%;' name='table_id' value='"+value+"'>"+i+"</th><td tyle='width:7%;'>"+value['ph']+"</td><td tyle='width:7%;'>"+value['pl']+"</td><td id='proPH"+i+"'>"+value['pro_ph']+"</td><td id='proPL"+i+"'>"+value['pro_ph']+"</td><td name='descIndex"+i+"'>"+value['desc_index'].toFixed(4)+"</td><td name='descRem"+i+"'>"+value['desc_inter']+"</td></td><td name='diffIndex"+i+"'>"+value['diff_index'].toFixed(4)+"</td><td name='diffRem"+i+"'>"+value['diff_inter']+"</td><td name='finalRem"+i+"'>"+value['final_rem']+"</td></tr>");
+                $("table tbody[name='main']").append("<tr id='tr"+i+"'><th scope='row' style='width:4%;' name='table_id' value='"+value+"'>"+i+"</th><td tyle='width:7%;'>"+value['ph']+"</td><td tyle='width:7%;'>"+value['pl']+"</td><td id='proPH"+i+"'>"+value['pro_ph']+"</td><td id='proPL"+i+"'>"+value['pro_pl']+"</td><td name='descIndex"+i+"'>"+value['desc_index'].toFixed(4)+"</td><td name='descRem"+i+"'>"+value['desc_inter']+"</td></td><td name='diffIndex"+i+"'>"+value['diff_index'].toFixed(4)+"</td><td name='diffRem"+i+"'>"+value['diff_inter']+"</td><td name='finalRem"+i+"'>"+value['final_rem']+"</td></tr>");
                 i++;
             });
                 $("#noItems").text(i-1);
@@ -434,9 +435,9 @@
 
                 if( $(`td[name='finalRem${j}']`).text()=="reject"){
                     $(`td[name='finalRem${j}']`).css("color","#ea4335"); 
-                }else{ $(`td[name='finalRem${j}']`).css("color","#fff"); }
+                }else{ $(`td[name='finalRem${j}']`).css("color","#000"); }
 
-                
+                j++;
             });
             
             $("#retained").text($("td:contains('retain')").length);

@@ -46,7 +46,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form class="form-horizontal"  id="thisForm" action="\test" method="POST">
+              <form class="form-horizontal"  id="thisForm" action="\test" method="POST" onsubmit="return checkForm(this);">
                 @csrf
                 <div class="card-body">
                   <div class="row">
@@ -55,24 +55,28 @@
                       <div class="form-group row">
                         <label for="subject" class="col-sm-2 col-form-label">Subject</label>
                         <div class="col-sm-10">
+                          
                           <input required type="text" class="form-control" id="subject" name="subject" >
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="examination" class="col-sm-2 col-form-label">Examination</label>
                         <div class="col-sm-10">
+                          
                           <input required type="text" class="form-control" id="examination" name="examination">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="course" class="col-sm-2 col-form-label">Course</label>
                         <div class="col-sm-10">
+                          
                           <input required type="text" class="form-control" id="course" name="course">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="set" class="col-sm-2 col-form-label">Set</label>
                         <div class="col-sm-10">
+                          
                           <input required type="text" class="form-control" id="set" name="set">
                         </div>
                       </div>
@@ -82,25 +86,27 @@
                       <div class="form-group row">
                         <label for="dateGiven" class="col-sm-4 col-form-label">Date Given</label>
                         <div class="col-sm-8">
+                          
                           <input required type="date" class="form-control" name="dateGiven" id="dateGiven">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="instructor" class="col-sm-4 col-form-label">Instructor</label>
                         <div class="col-sm-8">
-                          <input required type="text" class="form-control" id="instructor"  name="instructor" disabled value="{{ Auth::user()->name }}"> 
+                          <input  type="text" class="form-control" id="instructor"  name="instructor" disabled value="{{ Auth::user()->name }}"> 
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="students" class="col-sm-5 col-form-label">No. of Students</label>
                         <div class="col-sm-7">
+                          
                           <input required type="number" class="form-control" id="students"  name="studentsNo"> 
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="card-body">
-                    <button id="button" class="btn btn-info float-right" >Submit</button>
+                    <button id="button" class="btn btn-info float-right" onmouseup="this.disabled = true">Submit</button>
                   </div>
                   <div class="card-body">
                     <textarea id="" class="form-control" name="textarea" rows="22" placeholder="Paste your Questions here" required></textarea>
@@ -121,27 +127,18 @@
   <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
   <!-- Summernote -->
   <script src="plugins/summernote/summernote-bs4.min.js"></script>
-  <script>
-   $(function () {
-    // Summernote
-    $('#summernote').summernote({
-      placeholder:'Place your questions here.',
-      height:500,
-      toolbar:false,
-      
-
-    })
-
-    // CodeMirror
-    CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
-      mode: "htmlmixed",
-      theme: "monokai"
-    });
-  });
-  </script>
-
+  
   <script type="text/javascript">
 
+  var checkForm = function(form) {
+
+  //
+  // validate form fields
+  //
+
+    form.myButton.disabled = true;
+    return true;
+  };
     function paste(){
       
       if(true){

@@ -44,7 +44,7 @@
 @section('content')
     <section class="content">
         <div class="content-fluid">
-            <form action="/analysis" method="POST">
+            <form action="/analysis" method="POST" onsubmit="return checkForm(this);">
             @csrf
             <input type="hidden" name="nums" value="{{$tests->num_of_students}}">
                 <div class="card ">
@@ -60,7 +60,7 @@
                     </select>
                     </div>
                     <div class="card-body">
-                        <table class=" table-dark table-bordered table-striped text-center" style="width:100%;">
+                        <table class=" table-bordered table-striped text-center" style="width:100%;">
                             <thead>
                                 <tr>
                                     <th rowspan=2 scope="col" style="width:4%;">#</th>
@@ -108,7 +108,7 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                        <input type="submit" value="Save" class="btn btn-primary float-right">
+                        <input type="submit" value="Save" class="btn btn-primary float-right" >
                     </div>
                 </div>
             </form>
@@ -132,7 +132,15 @@
     @endphp
 <script>
 
+    var checkForm = function(form) {
 
+    //
+    // validate form fields
+    //
+
+    form.myButton.disabled = true;
+    return true;
+    };
         
     $("select").change(function(){
         var inputPHVal;
@@ -144,6 +152,7 @@
         $("option:selected").each(function(){
             var items = @json($setItems);
             var i = 1;
+            $("table tbody").empty();
             $.each(items[$(this).val()],function(key, value){
                 
                 $("table tbody").append("<tr><th scope='row' style='width:4%;' name='table_id' value='"+value+"'>"+i+"</th><td tyle='width:7%;'><input type='number' min='0' max='"+nums+"' class='form-control' name='PH[]'  id=''></td><td tyle='width:7%;'><input type='number' min='0' max='"+nums+"' class='input-color-secondary form-control' name='PL[]'  id=''></td><td id='proPH"+i+"'></td><td id='proPL"+i+"'><td name='descIndex"+i+"'></td><td name='descRem"+i+"'></td></td><td name='diffIndex"+i+"'></td><td name='diffRem"+i+"'></td><td name='finalRem"+i+"'></td></tr>");
@@ -221,7 +230,7 @@
                 
             if( $(`td[name='finalRem${index}']`).text()=="reject"){
                  $(`td[name='finalRem${index}']`).css("color","#ea4335"); 
-            }else{ $(`td[name='finalRem${index}']`).css("color","#fff"); }
+            }else{ $(`td[name='finalRem${index}']`).css("color","#000"); }
         });
                 
         }   
