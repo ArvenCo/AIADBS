@@ -24,8 +24,8 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               
-              <li class="breadcrumb-item"><a href="/tests" style=''>Tests</a></li>
-              <li class="breadcrumb-item active">Print</li>
+              <li class="breadcrumb-item"><a href="/print" style=''>Printable analysis</a></li>
+              <li class="breadcrumb-item active">Print Analysis</li>
 
             </ol>
           </div><!-- /.col -->

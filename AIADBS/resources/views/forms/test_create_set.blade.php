@@ -18,13 +18,14 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Create Test</h1>
+            <h1 class="m-0">Add Set</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               
-              <li class="breadcrumb-item"><a href="/tests" style=''>Tests</a></li>
-              <li class="breadcrumb-item active">Create Test</li>
+              <li class="breadcrumb-item"><a href="/test" style=''>Tests</a></li>
+              <li class="breadcrumb-item"><a href="/test/show/{{$test->id}}" style=''>Edit Test</a></li>
+              <li class="breadcrumb-item active">Add Set</li>
 
             </ol>
           </div><!-- /.col -->
@@ -40,9 +41,9 @@
     <section class="content">
       <div class="container-fluid">
         <!-- general form elements -->
-        <div class="card card-primary">
+        <div class="card card-white">
               <div class="card-header">
-                <h3 class="card-title">Quick Example</h3>
+                <h3 class="card-title"></h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -86,7 +87,7 @@
                       <div class="form-group row">
                         <label for="dateGiven" class="col-sm-4 col-form-label">Date Given</label>
                         <div class="col-sm-8">
-                          
+
                           <input disabled type="date" class="form-control" name="dateGiven" id="dateGiven" value="{{$test->date_given}}">
                         </div>
                       </div>
@@ -106,9 +107,10 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <button id="button" class="btn btn-info float-right" onclick="this.disabled = true">Submit</button>
+                    <button id="button" class="btn btn-info float-right" >Submit</button>
                   </div>
                   <div class="card-body">
+                  <small class="text-danger">Please note that nothing should be before at number item.*</small>
                     <textarea id="" class="form-control" name="textarea" rows="22" placeholder="Paste your Questions here" required></textarea>
                 </div>
                 </div>

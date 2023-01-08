@@ -26,6 +26,12 @@
   <link rel="stylesheet" href="../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+  
+  
   @yield('head')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -47,13 +53,13 @@
       @yield('content')
     </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  <!-- <footer class="main-footer">
     <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0
     </div>
-  </footer>
+  </footer> -->
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -66,11 +72,19 @@
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="../../plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- <script src="../../plugins/jquery-ui/jquery-ui.min.js"></script> -->
+
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
+
+<!-- SweetAlert2 -->
+<script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="../../plugins/toastr/toastr.min.js"></script>
+
+
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
@@ -92,10 +106,45 @@
 <script src="../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<!-- <script src="../../dist/js/demo.js"></script> -->
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="../../dist/js/pages/dashboard.js"></script>
+
+
+<!-- Page specific script -->
+
+
+
+  
+  
+
+  
+
+
+<script>
+  var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+  $(window).on('load',function() {
+      
+      if('{{$errors->has('success')}}'){
+        Toast.fire({
+        icon: 'success',
+        title: 'Success! \n {{$errors->any()? $errors->first('success') : ''}}'
+      });
+      }
+
+      if('{{$errors->has('error')}}'){
+        Toast.fire({
+        icon: 'error',
+        title: 'Error! \n {{$errors->any()? $errors->first('error') : ''}}'
+      });
+      }
+    });
+</script>
+
 @yield('script')
+
+
 </body>
 </html>

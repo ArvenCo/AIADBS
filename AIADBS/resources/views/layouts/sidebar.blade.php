@@ -27,10 +27,14 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
             with font-awesome or any other icon font library -->
+            @php
+            $uri = Request::route()->uri();
+            @endphp
+
 
         <li class="nav-item">
-            <a href="{{ (request()->is('test')) ? '' : '/test' }}" class="nav-link {{ (request()->is('test')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-solid fa-user"></i>
+            <a href="{{ ($uri =='test') ? '' : '/test' }}" class="nav-link {{ ($uri == 'test')||($uri == 'test/create')||($uri == 'test/{id}')||($uri == 'test/show/{id}')  ? 'active' : '' }}">
+                <i class="nav-icon fas fa-pencil-alt"></i>
                 <p>
                     Test
                 </p>
@@ -38,7 +42,7 @@
         </li>
         <li class="nav-item">
             <a href="/analysis_list" class="nav-link {{ (request()->is('analysis_list')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-images"></i>
+                <i class="nav-icon fas fa-file-alt"></i>
                 <p>
                     Analysis
                 </p>

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Route;
 
 use Carbon\Carbon;
+
+
 class TestController extends Controller
 {
 
@@ -31,7 +33,8 @@ class TestController extends Controller
     public function index(Request $request)
     {
         //
-        $test = Test::all();
+        $user = Auth::user();
+        $test = Test::where('user_id',$user->id)->get();
         $uri =$request->route()->uri();
         
         
@@ -99,7 +102,7 @@ class TestController extends Controller
             ]);
             $index++;
         }
-        return redirect()->back()->with('success','Mana bro.. Na sud na!');
+        return redirect()->back()->withErrors(['success'=>'Test has been created successfully.']);
     }
 
     /**
@@ -148,7 +151,7 @@ class TestController extends Controller
             'num_of_students' => $request->input('num_of_students')
           ]);
 
-        return back()->with('success','Test successfuly edited.');
+        return back()->withErrors(['success'=>'Test "'.$request->input('subject').'" has been edited successfully.']);
     }
 
     /**
@@ -180,7 +183,7 @@ class TestController extends Controller
             ]);
             $index++;
         }
-        return redirect()->back()->with('success','Set added successfully.');
+        return response()->redirect()->back()->withErrors(['success'=>'set "'.$request->input('set').'" was successfully added.']);
     }
 
     /**

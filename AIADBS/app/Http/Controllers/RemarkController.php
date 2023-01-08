@@ -103,7 +103,7 @@ class RemarkController extends Controller
             $index++;
         }
         Remark::insert($data);
-        return back()->with('success','Item analysis saved successfully.');
+        return back()->withErrors(['success'=>'Item analysis saved successfully.']);
     }
     /**
      * Display the specified resource.
@@ -244,7 +244,7 @@ class RemarkController extends Controller
           ]);
             $index++;
         }
-        return back()->with('success','Remark updated successfully.');
+        return back()->withErrors(['success'=>'Item analysis updated successfully.']);
     }
 
     /**

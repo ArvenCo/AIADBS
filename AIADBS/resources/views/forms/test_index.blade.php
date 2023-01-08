@@ -6,18 +6,33 @@
   <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endsection
+          
 
 @section('header')
         <!-- Content Header (Page header) -->
+          <?php
+            $uri = Request::route()->uri();
+            $page;
+            if ($uri == 'test'){
+              $page = 'Test';
+            }
+            if ($uri == 'analysis_list'){
+              $page = 'Analysisable Tests';
+            }
+            if ($uri == 'print'){
+              $page = 'Printable analysis';
+            }
+          ?>
         <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Tests</h1>
+           
+            <h1 class="m-0">{{$page}}</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item active"><a href="#">Tests</a></li>
+              <li class="breadcrumb-item active">{{$page}}</li>
 
             </ol>
           </div><!-- /.col -->
@@ -30,10 +45,12 @@
 @section('content')
             <section class="content">
                 <div class="content-fluid">
-                    <div class="card">
-                        <div class="card-header ">
-                            <h3 class="card-title">DataTable with default features</h3>
-                            <a href="test/create" class="btn btn-secondary float-right" >Crete Test</a>
+                    <div class="card card-white">
+                        <div class="card-header  border-0">
+                            <h3 class="card-title"></h3>
+                            @if($uri == 'test')
+                            <a href="test/create" class="btn btn-secondary float-right text-white" >Create Test</a>
+                            @endif
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">

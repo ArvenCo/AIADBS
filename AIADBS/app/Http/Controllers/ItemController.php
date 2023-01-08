@@ -72,7 +72,7 @@ class ItemController extends Controller
         //
         Item::where('id',$id)
         ->update( ['item_string' => $request->input('item')]);
-        return back()->with('success', 'Item updated successfully');
+        return back()->withErrors(['success'=>'Item updated successfully']);
     }
 
     /**
