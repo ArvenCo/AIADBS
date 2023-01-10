@@ -11,15 +11,16 @@ class CreateItemsTable extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->integer('item_number');
-            $table->string('item_string',200);
+            $table->string('item_string',9999);
             $table->foreignId('set_id')->constrained('sets');
             $table->timestamps();
-        }); 
+        });
     }
     
     /**

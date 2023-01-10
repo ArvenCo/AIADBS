@@ -97,7 +97,7 @@
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="students" class="col-sm-5 col-form-label">No. of Students</label>
+                        <label for="students" class="col-sm-5 col-form-label">No. of Test Papers</label>
                         <div class="col-sm-7">
                           
                           <input required type="number" class="form-control" id="students"  name="studentsNo"> 

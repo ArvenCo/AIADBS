@@ -97,10 +97,10 @@
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
+            <div class="card card-white">
+                <div class="card-header border-0">
                     <h3 class="card-header-title">
-                        Print Me Tang inang shit!
+                        
                     </h3>
                 </div>
                 <div class="card-body" id="printMe">

@@ -15,9 +15,9 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->string('subject',200);
-            $table->string('examination',200);
-            $table->string('course',200);
+            $table->string('subject');
+            $table->string('examination');
+            $table->string('course');
             $table->date('date_given');
             $table->integer('num_of_students');
             $table->foreignId('user_id')->constrained('users');

@@ -79,20 +79,21 @@
                                 <td>{{$test->num_of_students}}</td>
                                 <td class="">
                                   @if($uri == 'analysis_list')
-                                  <a href="analysis/create/{{$test->id}}"  class="btn btn-info btn-xs"> 
-                                    <i class="fas fa-chart-bar text-white"></i>
+                                  <a href="analysis/create/{{$test->id}}"  class=" btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Analysis"> 
+                                    <i class="nav-icon fas fa-file-alt text-white"></i>
+                                    
                                   </a>
-                                  <a href="analysis/{{$test->id}}" class="btn btn-info btn-xs">
+                                  <a href="analysis/{{$test->id}}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Edit Analysis">
                                     <i class="fas fa-edit text-white"></i>
                                   </a>
                                   @endif
                                   @if($uri == 'print')
-                                  <a href="print/show/{{$test->id}}" class="btn btn-info btn-xs">
+                                  <a href="print/show/{{$test->id}}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Print">
                                     <i class="fas fa-print text-white"></i>
                                   </a>
                                   @endif
                                   @if($uri == 'test')
-                                  <a href="test/show/{{$test->id}}" class="btn btn-info btn-xs">
+                                  <a href="test/show/{{$test->id}}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Edit">
                                     <i class="fas fa-edit text-white"></i>
                                   </a>
                                   @endif
