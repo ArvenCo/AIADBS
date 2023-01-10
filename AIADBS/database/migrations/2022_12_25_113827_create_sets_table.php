@@ -15,7 +15,7 @@ class CreateSetsTable extends Migration
     {
         Schema::create('sets', function (Blueprint $table) {
             $table->id();
-            $table->string('set_name');
+            $table->string('set_name',200);
             $table->integer('num_of_items');
             $table->foreignId('test_id')->constrained('tests');
             $table->timestamps();

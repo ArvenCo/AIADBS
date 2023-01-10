@@ -75,7 +75,9 @@
 <!-- <script src="../../plugins/jquery-ui/jquery-ui.min.js"></script> -->
 
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
 
 <!-- SweetAlert2 -->
 <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
@@ -117,9 +119,6 @@
 
 
 <script>
-  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
   var Toast = Swal.mixin({
       toast: true,
       position: 'top-end',
