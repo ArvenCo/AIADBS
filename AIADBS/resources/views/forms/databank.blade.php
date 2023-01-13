@@ -1,31 +1,18 @@
 @extends('main')
-@section('head')
-<style>
-    /* @media print{
-        body *:not(#printMe):not(#printMe *){
-            visibility:hidden;
-        }
-        #printMe{
-            position: absolute;
-            top:0;
-            left:0;
-        }
-    } */
-</style>
-@endsection
+
 @section('header')
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Print Analysis</h1>
+            <h1 class="m-0">Retrieve Items</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               
-              <li class="breadcrumb-item"><a href="/print" style=''>Printable analysis</a></li>
-              <li class="breadcrumb-item active">Print Analysis</li>
+              <li class="breadcrumb-item"><a href="/databank" style=''>Databank</a></li>
+              <li class="breadcrumb-item active">Retrieve Items</li>
 
             </ol>
           </div><!-- /.col -->
@@ -37,67 +24,110 @@
 
 
 @section('content')
-    <section class="content">
-        <div class="content-fluid">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-header-title">
-                        Overview
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="form-horizontal row">
+<section class="container">
+    <div class="div container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-header-title">
+                    Test Overview
+                </h3>
+            </div>
+            <form action="/edittest/{{$tests->id}}" class="form-horizontal" method="POST">
+                @csrf
+            <div class="card-body">
+                
+                    <div class="row">
                         <div class="col-8">
                             <div class="form-group row">
-                                <label for="subject" class="col-sm-2 col-form-label">Subject:</label>
+                                <label for="subject" class="col-sm-2 col-form-label">Subject</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control" id="subject">{{$tests->subject}}</p>
+                                    <input type="text" name="subject" id="subject" class="form-control" value="{{$tests->subject}}" disabled>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="examination" class="col-sm-2 col-form-label">Examination:</label>
+                                <label for="examination" class="col-sm-2 col-form-label">Examination</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control" id="examination">{{$tests->examination}}</p>
+                                    <input type="text" name="examination" id="examination" class="form-control" value="{{$tests->examination}}" disabled>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="course" class="col-sm-2 col-form-label">Course:</label>
+                                <label for="course" class="col-sm-2 col-form-label">Course</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control" id="course">{{$tests->course}}</p>
+                                    <input type="text" name="course" id="course" class="form-control" value="{{$tests->course}}" disabled>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="set" class="col-sm-2 col-form-label">Set: </label>
-                                <div class="col-sm-10">
+                                <label for="course" class="col-sm-2 col-form-label">Set</label>
+                                <div class="col-sm-5">
                                     <select name="set" id="set" class="form-control">
-                                        <option value="" disable> Choose a Set...</option>
+                                        <option value="">Select a Set...</option>
                                         @foreach($sets as $set)
-                                        <option value="{{$set->id}}">{{$set->set_name}}</option>
+                                        <option value="{{$set->id}}" >{{$set->set_name}}</option>
                                         @endforeach
                                     </select>
+                                    <small class="text-warning ms-3" >Warning. Please select a set.</small>
+                                </div>
+                                <div class="col-sm-2">
+                                    
                                 </div>
                             </div>
+                            
                         </div>
+                        <!-- End of Left Side -->
+
+                        <!-- Start of Right Side -->
                         <div class="col-4">
                             <div class="form-group row">
-                                <label for="dateGiven" class="col-sm-5 col-form-label">Date Given:</label>
-                                <div class="col-sm-7">
-                                    <p class="form-control" id="dateGiven">{{$tests->date_given}}</p>
+                                <label for="date_given" class="col-sm-4 col-form-label">Date Given</label>
+                                <div class="col-sm-8">
+                                    <input type="date" name="date_given" id="date_given" class="form-control" value="{{$tests->date_given}}" disabled>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="students" class="col-sm-5 col-form-label">No. of Students:</label>
-                                <div class="col-sm-7">
-                                    <p class="form-control" id="students">{{$tests->num_of_students}}</p>
+                                <label for="instructor" class="col-sm-4 col-form-label">Instructor</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="instructor" id="instructor" class="form-control" value="{{Auth::user()->name}}" disabled>
                                 </div>
                             </div>
-
+                            <div class="form-group row">
+                                <label for="num_of_students" class="col-sm-4 col-form-label">No. of Students</label>
+                                <div class="col-sm-8">
+                                    <input type="number" name="num_of_students" id="num_of_students" class="form-control" value="{{$tests->num_of_students}}" disabled>
+                                </div>
+                            </div>
+                            
+                            
                         </div>
                     </div>
+               
+            </div>
+                
+            </form>
+        </div>
+
+
+        <div class="card">
+            <div class="card-header d-flex justify-contents-end">
+                <div class="col-9"></div>
+                <div class="col-3">
+                    <select name="remark" id="remark" class="form-control" disabled>
+                        <option value="" disable> Choose a Remark...</option>
+                        <option value="retain">Retain</option>
+                        <option value="revise">Revise</option>
+                        <option value="reject" class='text-danger'>Reject</option>
+                        <option value="all" class='text-warning'>All Items</option>
+                    </select>
                 </div>
             </div>
+            <div class="card-body">
+                <small class="text-danger ms-3"></small>
+                <textarea id="" class="form-control" name="textarea" rows="10" 
+                placeholder="Choose a Remarks to Generate" readonly></textarea>
+            </div>
+           
+        </div>
 
-            <div class="card">
+        <div class="card">
                 <div class="card-header">
                     <h3 class="card-header-title">
                         Print Section
@@ -113,7 +143,7 @@
                             <div class="col-4">
                                 <table class=" text-center">
                                     <tr>
-                                        <td class="text-primary font-weight-bold">SAINT MICHAEL COLLEGE OF CARAGA</td>
+                                        <td class="text-primary font-weight-bold ">SAINT MICHAEL COLLEGE OF CARAGA</td>
                                     </tr>
                                     <tr>
                                         <td>Nasipit, Agusan del Norte</td>
@@ -399,17 +429,51 @@
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
-    
+    </div>
+</section>
+                            
 @endsection
 
 @section('script')
+<script>
     
-    @php
+    $('select#set').change(function() {
+        
+        $('select#remark').prop( "disabled", false );
+        
+    });
+    
+    $('select#remark').change(function(){
+        var items = @json($setItems);
+        var appendvalue = "";
+        var counter = 0;
+        if ($(this).val() == "reject"){
+            
+            $('small.text-danger').html('Danger! Rejected Item.');
+        }else{$('small.text-danger').html('');}
+        $.each(items[$('select#set').val()], function(key, value){
+            
+            if ($('select#remark').val()==value['final_rem']){
+                counter += 1;
+                appendvalue += counter.toString() +'. ' + value['item_string'];
+            }else if ($('select#remark').val() == 'all') {
+                counter += 1;
+                appendvalue += counter.toString() +'. ' + value['item_string'];
+            }
+            
+            
+        });
+        $('textarea').val(appendvalue);
+       
+    });
+</script>
+
+   
+@php
         $nums =  $tests->num_of_students;
         
     @endphp
+
 <script>
 
     $("select").change(function(){
@@ -489,6 +553,4 @@
     
    
 </script>
-
-
 @endsection

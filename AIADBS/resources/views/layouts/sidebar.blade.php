@@ -12,7 +12,7 @@
     <!-- Sidebar user (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-        <img src="../../dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">
+        <img src="../../dist/img/logo/profile.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
         <a href="#" class="d-block" style="text-decoration:none;">{{Auth::user()->name}}</a>
@@ -49,13 +49,21 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="/databank" class="nav-link {{ (request()->is('databank')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-paperclip"></i>
+                <p>
+                    Data Bank
+                </p>
+            </a>
+        </li>
+        <!-- <li class="nav-item">
             <a href="/print" class="nav-link {{ (request()->is('print')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-print"></i>
                 <p>
                     Print
                 </p>
             </a>
-        </li>
+        </li> -->
         
         
 

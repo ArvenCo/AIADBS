@@ -121,26 +121,27 @@
 
         <div class="card">
             <form action="">
-                <div class="card-header">
-                    <h3 class="card-header-title">
-                        Items
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <table class="table-bordered table-stripped" style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th>Item #</th>
-                                <th>Item String</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                    
-                </div>
+            <div class="card-header">
+                <h3 class="card-header-title">
+                    Items
+                </h3>
+            </div>
+            <div class="card-body">
+                <table class="table-bordered table-stripped" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Item #</th>
+                            <th>Item String</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                
+            </div>
+                
             </form>
         </div>
     </div>

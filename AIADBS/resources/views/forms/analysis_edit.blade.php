@@ -44,6 +44,63 @@
 @section('content')
     <section class="content">
         <div class="content-fluid">
+            <div class="card">
+                <div class="card-body">
+                
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group row">
+                                <label for="subject" class="col-sm-2 col-form-label">Subject</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="subject" id="subject" class="form-control" value="{{$tests->subject}}" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="examination" class="col-sm-2 col-form-label">Examination</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="examination" id="examination" class="form-control" value="{{$tests->examination}}" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="course" class="col-sm-2 col-form-label">Course</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="course" id="course" class="form-control" value="{{$tests->course}}" disabled>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        <!-- End of Left Side -->
+
+                        <!-- Start of Right Side -->
+                        <div class="col-4">
+                            <div class="form-group row">
+                                <label for="date_given" class="col-sm-4 col-form-label">Date Given</label>
+                                <div class="col-sm-8">
+                                    <input type="date" name="date_given" id="date_given" class="form-control" value="{{$tests->date_given}}" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="instructor" class="col-sm-4 col-form-label">Instructor</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="instructor" id="instructor" class="form-control" value="{{Auth::user()->name}}" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="num_of_students" class="col-sm-4 col-form-label">No. of Students</label>
+                                <div class="col-sm-8">
+                                    <input type="number" name="num_of_students" id="num_of_students" class="form-control" value="{{$tests->num_of_students}}" disabled>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+            
+        
             <form action="/analysis/update" method="POST" onsubmit="return checkForm(this);">
             @csrf
             <input type="hidden" name="nums" value="{{$tests->num_of_students}}">
@@ -107,6 +164,8 @@
                             </tbody>
                         </table>
                     </div>
+                    
+
                     <div class="card-footer">
                         <input type="submit" value="Save" class="btn btn-primary float-right" >
                     </div>

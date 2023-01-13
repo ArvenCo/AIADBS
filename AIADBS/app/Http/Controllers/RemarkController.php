@@ -111,6 +111,31 @@ class RemarkController extends Controller
      * @param  \App\Models\Remark  $remark
      * @return \Illuminate\Http\Response
      */
+    public function showbank($id){
+      
+      
+      $finalrems = ['revise', 'retain', 'reject'];
+      $datas = Remark::rightjoin('items', 'remarks.item_id', '=', 'items.id')
+        ->rightjoin('sets', 'sets.id', '=', 'items.set_id')
+        ->where('test_id', '=', $id)
+        ->select('item_string')
+        ->get();
+      $byremark  = array([]);
+      foreach($datas as $data){
+        
+
+        dd($data->first()->item_string);
+        
+
+        
+        
+      }
+
+      dd($byremark);
+
+      
+      
+    }
     public function show(Request $request,Remark $remark, $id)
     {
         //
@@ -125,7 +150,7 @@ class RemarkController extends Controller
 
         $setItems = [];
         $itemRemark = [];
-
+        $byremark = [];
         foreach($sets as $set){
             $setId = $set->id;
             $items = Item::where('set_id' ,$setId)->get();
@@ -134,15 +159,13 @@ class RemarkController extends Controller
             foreach ($items as $item){
                 $data = [];
                 $data = Remark::rightJoin('items','items.id','=','item_id')->where('item_id',$item->id)->get();
-                $subset = $data->map(function($data){
-                    return collect($data->toArray())
-                    ->all();
-                });
+                
                 if ($data->isEmpty()) {
                   continue;
                 }
                 $itemMisc = [
                     'id' => $data->first()->id,
+                    'item_string' => $data->first()->item_string,
                     'ph' => $data->first()->ph,
                     'pl' => $data->first()->pl,
                     'pro_ph' => $data->first()->pro_ph,
@@ -154,7 +177,9 @@ class RemarkController extends Controller
                     'final_rem' => $data->first()->final_rem,
                 ];
                 
-                $itemRemark[$item->item_number] = $subset;
+                
+        
+               
                 array_push($itemsArray ,$itemMisc);
                 
             }
@@ -165,6 +190,9 @@ class RemarkController extends Controller
         }
         //dd(['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests, 'itemRemark' => $itemRemark, 'itemsMisc' => $itemMisc]);
         $uri = $request->route()->uri();
+        if($uri == "databank/show/{id}"){
+          return view('forms.databank', ['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests]);
+        }
         if ($uri == "analysis/{id}"){
           return view('forms.analysis_edit', ['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests]);
         }else{

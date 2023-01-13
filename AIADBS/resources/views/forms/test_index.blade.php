@@ -22,6 +22,9 @@
             if ($uri == 'print'){
               $page = 'Printable analysis';
             }
+            if ($uri == 'databank'){
+              $page = 'Data Bank';
+            }
           ?>
         <section class="content-header">
       <div class="container-fluid">
@@ -54,18 +57,18 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="example1" class="table table-bordered table-hover">
+                            <table id="example1" class="table table-bordered table-hover" data-filter-control="true" data-show-search-clear-button="true">
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Subject</th>
-                                <th>Examination</th>
+                                <th data-filter-control="input">Subject</th>
+                                <th data-filter-control="select">Examination</th>
                                 <th>Course</th>
                                 <th>Date Given</th>
                                 <th>Number 
                                   of 
                                   Students</th>
-                                <th></th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody style=";">
@@ -79,20 +82,30 @@
                                 <td>{{$test->num_of_students}}</td>
                                 <td class="">
                                   @if($uri == 'analysis_list')
-                                  <a href="analysis/create/{{$test->id}}"  class="btn btn-info btn-xs"> 
+                                  <a href="analysis/create/{{$test->id}}"  class="btn btn-info btn-xs" 
+                                  data-toggle="tooltip" data-placement="top" title="Item Analysis"> 
                                     <i class="fas fa-chart-bar text-white"></i>
                                   </a>
-                                  <a href="analysis/{{$test->id}}" class="btn btn-info btn-xs">
+                                  <a href="analysis/{{$test->id}}" class="btn btn-info btn-xs"
+                                  data-toggle="tooltip" data-placement="top" title="Edit Item Analysis">
                                     <i class="fas fa-edit text-white"></i>
                                   </a>
                                   @endif
                                   @if($uri == 'print')
-                                  <a href="print/show/{{$test->id}}" class="btn btn-info btn-xs">
+                                  <a href="print/show/{{$test->id}}" class="btn btn-info btn-xs"
+                                  data-toggle="tooltip" data-placement="top" title="Item Analysis">
                                     <i class="fas fa-print text-white"></i>
                                   </a>
                                   @endif
+                                  @if($uri == 'databank')
+                                  <a href="databank/show/{{$test->id}}" class="btn btn-info btn-xs"
+                                  data-toggle="tooltip" data-placement="top" title="Items">
+                                    <i class="far fa-copy text-white"></i>
+                                  </a>
+                                  @endif
                                   @if($uri == 'test')
-                                  <a href="test/show/{{$test->id}}" class="btn btn-info btn-xs">
+                                  <a href="test/show/{{$test->id}}" class="btn btn-info btn-xs"
+                                  data-toggle="tooltip" data-placement="top" title="Edit">
                                     <i class="fas fa-edit text-white"></i>
                                   </a>
                                   @endif
@@ -136,12 +149,22 @@
 <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <script>
-  $(function () {
+  $(document).ready(function () {
     $("#example1").DataTable({
       "responsive": true,
       "lengthChange": false,
       "autoWidth": false,
-      "paging": true
+      "paging": true,
+      "searching":true,
+      "columnDefs": [{
+            targets: [1, 2],
+            searchable: true
+        }, {
+            targets: [2],
+            select: true
+        }]
+      
+      
       //"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
@@ -152,6 +175,7 @@
       "info": true,
       "autoWidth": false,
       "responsive": true,
+      
     });
   });
 </script>

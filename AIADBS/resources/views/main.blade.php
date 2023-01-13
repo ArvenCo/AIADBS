@@ -119,6 +119,9 @@
 
 
 <script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+  });
   var Toast = Swal.mixin({
       toast: true,
       position: 'top-end',

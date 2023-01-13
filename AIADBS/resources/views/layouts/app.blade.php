@@ -25,7 +25,7 @@
             <div class="container">
                 
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="../../dist/img/logo/SMCC.png" alt="AdminLTE Logo" class="brand-image " width="50" height="50"style="opacity: .8">
+                    <img src="../../dist/img/logo/SMCC.png" alt="SMCC Logo" class="brand-image " width="50" height="50"style="opacity: .8">
                     SCMCC {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -79,8 +79,11 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="d-flex align-items-stretch py-5">
+            
             @yield('content')
+            
+            
         </main>
     </div>
 </body>

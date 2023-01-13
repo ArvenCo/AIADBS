@@ -63,7 +63,12 @@
                         <label for="examination" class="col-sm-2 col-form-label">Examination</label>
                         <div class="col-sm-10">
                           
-                          <input required type="text" class="form-control" id="examination" name="examination">
+                          <select name="examination" id="examination" class="form-control">
+                              <option value="Finals" >Final</option>
+                              <option value="Finals" >Pre-final</option>
+                              <option value="Finals" >Midterm</option>
+                              <option value="Finals" >Prelim</option>
+                          </select>
                         </div>
                       </div>
                       <div class="form-group row">
