@@ -15,7 +15,7 @@ use App\Http\Controllers\ItemController;
 |
 */
 
-Route::middleware('verified')->get('/', function () {
+Route::middleware('auth')->get('/', function () {
     return view('main');
 });
 
