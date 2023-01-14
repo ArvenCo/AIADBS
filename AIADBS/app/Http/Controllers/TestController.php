@@ -183,7 +183,7 @@ class TestController extends Controller
             ]);
             $index++;
         }
-        return response()->redirect()->back()->withErrors(['success'=>'set "'.$request->input('set').'" was successfully added.']);
+        return back()->withErrors(['success'=>'set "'.$request->input('set').'" was successfully added.']);
     }
 
     /**
