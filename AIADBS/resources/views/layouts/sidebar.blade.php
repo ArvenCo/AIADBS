@@ -30,8 +30,68 @@
             @php
             $uri = Request::route()->uri();
             @endphp
-
-
+        
+        @if(Auth::user()->id == 1)
+        <li class="nav-item ">
+          <a href="#" class="nav-link ">
+            <i class="nav-icon fas fa-school"></i>
+            <p>
+              Department
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="./index.html" class="nav-link ">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Departments</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('department.create')}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create Department</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="./index3.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Update Department</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item ">
+          <a href="#" class="nav-link ">
+            <i class="nav-icon fas fa-user-graduate"></i>
+            <p>
+              Educator
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="./index.html" class="nav-link ">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Show Educator</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('educator.create')}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Create Educator</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="./index3.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Update Educators</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        
+        @else
         <li class="nav-item">
             <a href="{{ ($uri =='test') ? '' : '/test' }}" class="nav-link {{ ($uri == 'test')||($uri == 'test/create')||($uri == 'test/{id}')||($uri == 'test/show/{id}')  ? 'active' : '' }}">
                 <i class="nav-icon fas fa-pencil-alt"></i>
@@ -56,15 +116,8 @@
                 </p>
             </a>
         </li>
-        <!-- <li class="nav-item">
-            <a href="/print" class="nav-link {{ (request()->is('print')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-print"></i>
-                <p>
-                    Print
-                </p>
-            </a>
-        </li> -->
-        
+        <!-- -->
+        @endif
         
 
         

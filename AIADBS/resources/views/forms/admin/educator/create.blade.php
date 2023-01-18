@@ -1,16 +1,16 @@
-@extends('layouts.app')
+@extends('main')
 
 @section('content')
-<div class="container ">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-5 ">
             <div class="card">
-                <div class="card-header bg-white border-0 text-center h1">{{ __('Register') }}</div>
+                <div class="card-header bg-white border-0 text-center h1">{{ __('Register Educator') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('educator.register') }}">
                         @csrf
-                        
                         <div class="form-group">
                             <label for="name" >{{ __('Name') }}</label>
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -24,7 +24,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="email" >{{ __('Email Address') }}</label>
+                            <label for="email" >{{ __('Username') }}</label>
                                 <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
@@ -67,4 +67,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

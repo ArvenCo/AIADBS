@@ -30,7 +30,7 @@
               
               <li class="breadcrumb-item"><a href="/analysis_list" style=''>Analysisable Tests</a></li>
               <li class="breadcrumb-item active">Item Analysis</li>
-
+                
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->

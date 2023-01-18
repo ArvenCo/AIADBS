@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\RemarkController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\EducatorController;
+use App\Http\Controllers\DepartmentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +22,7 @@ use App\Http\Controllers\ItemController;
 Route::middleware('auth')->get('/', function () {
     return view('main');
 });
+
 
 
 
@@ -45,7 +50,6 @@ Route::middleware('auth')->post('/item/{id}',[App\Http\Controllers\ItemControlle
 
 Route::middleware('auth')->post('/analysis', [App\Http\Controllers\RemarkController::class , 'store']);
 
-
 Route::middleware('auth')->get('/analysis/create/{id}',[App\Http\Controllers\RemarkController::class,'create']);
 Route::middleware('auth')->post('/analysis/update',[App\Http\Controllers\RemarkController::class,'update']);
 
@@ -53,7 +57,13 @@ Route::middleware('auth')->get('/analysis/{id}', [App\Http\Controllers\RemarkCon
 
 Route::middleware('auth')->get('/print/show/{id}',[App\Http\Controllers\RemarkController::class,'show']);
 Route::middleware('auth')->get('/databank/show/{id}',[App\Http\Controllers\RemarkController::class,'show']);
+
+Route::middleware('auth')->get('/educator/create', [App\Http\Controllers\EducatorController::class,'create'])->name('educator.create');
+Route::middleware('auth')->get('/department/create', [App\Http\Controllers\DepartmentController::class,'create'])->name('department.create');
+
+Route::middleware('auth')->post('/educator', [App\Http\Controllers\MainController::class, 'register'])->name('educator.register');
+
 Auth::routes([
-    'verify' => true
+   
 ]); 
 Route::middleware('auth')->get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('main');   
