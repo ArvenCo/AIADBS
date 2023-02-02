@@ -410,6 +410,10 @@
         $nums =  $tests->num_of_students;
         
     @endphp
+
+<script>
+    
+</script>
 <script>
 
     $("select").change(function(){

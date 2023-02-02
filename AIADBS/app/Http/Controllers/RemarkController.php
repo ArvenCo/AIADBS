@@ -9,6 +9,7 @@ use App\Models\Item;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RemarkController extends Controller
 {
@@ -31,10 +32,20 @@ class RemarkController extends Controller
     public function create($id)
     {
         //
+        $user = Auth::user();
+        $educator = DB::table('educators')->rightjoin('departments','departments.id','=','department_id')->where('user_id',$user->id)->get();
+
+        if ($id == '0'){
+          
+          $id = Test::latest('id')->where('user_id', '=', $user->id)->first()->id;
+          
+        }
+        
+        
         $tests = Test::find($id);
         $sets = Set::leftjoin('items','sets.id','=', 'items.set_id' )
         ->leftjoin('remarks', 'items.id', '=', 'remarks.item_id')
-        ->where('test_id', '=', $id)->where('remarks.id', '=', null)
+        ->where('test_id', '=', $id)//->where('remarks.id', '=', null)
         ->select('sets.id','set_name',DB::raw('count(*) as total'))
         ->groupby('sets.id','set_name')->get();
         
@@ -50,7 +61,8 @@ class RemarkController extends Controller
 
             $setArray[$setId] = $itemsArray;
         }
-        return view('forms.analysis', ['sets'=> $sets, 'setItems' => $setArray, 'tests' => $tests]);
+        
+        return view('forms.analysis.create', ['sets'=> $sets, 'setItems' => $setArray, 'tests' => $tests,'educator'=>$educator]);
     }
 
     /**
@@ -61,8 +73,10 @@ class RemarkController extends Controller
      */
     public function store(Request $request)
     {
+
         
-        
+          
+      
         $numS = $this->getSample($request->input('nums'));
         $remark = new Remark; 
         $items = Item::where('set_id' ,$request->input('selectedSet'))->get();
@@ -73,6 +87,7 @@ class RemarkController extends Controller
         $index = 0;
         $data = [];
         foreach ($items as $item){
+
             $ph = $phs[$index];
             $pl = $pls[$index];
             $proPh = $ph/$numS;
@@ -87,7 +102,6 @@ class RemarkController extends Controller
             $finalRem = $this->getFinalRemark($descInter,$diffInter);
 
             $data[] = [
-                
                 'item_id' => $item->id,
                 'ph' => $ph,
                 'pl' => $pl,
@@ -97,13 +111,13 @@ class RemarkController extends Controller
                 'diff_index' => $diffIndex,
                 'final_rem' => $finalRem,
                 'created_at' => now()
-
             ];
 
             $index++;
         }
         Remark::insert($data);
-        return back()->withErrors(['success'=>'Item analysis saved successfully.']);
+        return $data;
+        // return withErrors(['success'=>'Item analysis saved successfully.']);
     }
     /**
      * Display the specified resource.
@@ -136,9 +150,21 @@ class RemarkController extends Controller
       
       
     }
+
+
+    public function showData(Request $request, $id){
+
+      $sets = Set::find($id)->leftjoin('tests','tests.id', '=', 'test_id')->get();
+
+      $items = DB::table('items')
+              ->rightjoin('remarks','items.id', '=', 'remarks.item_id')
+              ->where('set_id', $id)->get(); 
+      return ['items' => $items, 'sets' => $sets];
+    }
     public function show(Request $request,Remark $remark, $id)
     {
         //
+        
         $tests = Test::find($id);
         $sets = Set::rightjoin('items', 'sets.id','=', 'items.set_id')
         ->rightjoin('remarks', 'items.id', '=', 'remarks.item_id')
@@ -177,13 +203,8 @@ class RemarkController extends Controller
                     'final_rem' => $data->first()->final_rem,
                 ];
                 
-                
-        
-               
                 array_push($itemsArray ,$itemMisc);
-                
             }
-
             $setItems[$setId] = $itemsArray;
             
             

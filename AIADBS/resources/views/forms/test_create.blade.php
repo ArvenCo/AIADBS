@@ -1,8 +1,10 @@
 @extends('main')
 
 @section('head')
-<!-- summernote -->
-<link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+<!-- Select2 -->
+<link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <style>
   input{
     background: #fff!important;
@@ -56,7 +58,8 @@
                         <label for="subject" class="col-sm-2 col-form-label">Subject</label>
                         <div class="col-sm-10">
                           
-                          <input required type="text" class="form-control" id="subject" name="subject" >
+                          <input type="text" required name="subject" class="form-control" id="subject">
+
                         </div>
                       </div>
                       <div class="form-group row">
@@ -75,7 +78,11 @@
                         <label for="course" class="col-sm-2 col-form-label">Course</label>
                         <div class="col-sm-10">
                           
-                          <input required type="text" class="form-control" id="course" name="course">
+                          <select name="course" id="course" class="form-control">
+                            @foreach($courses as $course)
+                            <option value="{{$course}}">{{$course}}</option>
+                            @endforeach
+                          </select>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -111,7 +118,7 @@
                     </div>
                   </div>
                   <div class="card-body">
-                    <button id="button" class="btn btn-info float-right" >Submit</button>
+                    <button id="button" class="btn btn-primary px-5 float-right" >Submit</button>
                   </div>
                   <div class="card-body">
                     <small class="text-danger">Please note that nothing should be before at number item.</small>
@@ -130,10 +137,25 @@
 
 @section('script')
     <!-- bs-custom-file-input -->
-  <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-  <!-- Summernote -->
-  <script src="plugins/summernote/summernote-bs4.min.js"></script>
+  <script src="../../plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+  <!-- Select2 -->
+  <script src="../../plugins/select2/js/select2.full.min.js"></script>
   
+  @php 
+  $options = $subjects;
+  
+  @endphp
+
+  <script>
+    var items = @JSON($subjects);
+    const array = [];
+    $.each(items, function (index, item) { 
+      array.push(item['name']);
+    });
+    
+    $('#subject').autocomplete({ source: array });
+  </script>
   <script type="text/javascript">
 
   var checkForm = function(form) {
@@ -141,7 +163,7 @@
   //
   // validate form fields
   //
-
+    $.get('');
     form.myButton.disabled = true;
     return true;
   };

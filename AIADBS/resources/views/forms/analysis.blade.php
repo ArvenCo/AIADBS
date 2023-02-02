@@ -235,8 +235,6 @@
                 
         }   
 
-        
-
         function getSample(papers){
             var sample = 0;
             if (papers >= 50){
@@ -280,6 +278,7 @@
         //IF(Desc &Diff="marginal"&"easy","revise",IF(Desc &Diff="poor"&"easy","reject",
         //IF(Desc &Diff="poor"&"difficult","revise",IF(Desc &Diff="poor"&"average","revise",
         //IF(B17&C17=""&"","","retain")))))))
+        
         function getFinalRemark(Desc,Diff){
             if ((Desc=="very good item") && (Diff == "easy")){
                 return "revise";

@@ -15,8 +15,9 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained('courses');
-            $table->string('subject_name');
+            $table->foreignId('department_id')->constrained('departments');
+            $table->string('name');
+            $table->integer('trashed')->nullable();
             $table->timestamps();
         });
     }

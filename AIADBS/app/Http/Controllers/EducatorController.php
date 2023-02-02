@@ -28,7 +28,7 @@ class EducatorController extends Controller
         if (Auth::user()->id != 1 ){
             abort(403);
         }else{
-            return view('forms.admin.educator.create');
+            return view('forms.admin.educator.create',app('App\Http\Controllers\DepartmentController')->getDepartments());
         }
     }
 

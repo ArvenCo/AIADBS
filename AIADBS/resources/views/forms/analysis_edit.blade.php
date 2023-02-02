@@ -13,7 +13,10 @@
     }
 
 
+
+   
     </style>
+    
 @endsection
 
 
@@ -215,18 +218,18 @@
             $.each(items[$(this).val()],function(key, value){
                 
                 $("table tbody").append(`
-                <tr>
-                    <th scope='row' style='width:4%;' >${i} <input type="hidden" name="id[]" value="${value['id']}"></th>
-                    <td tyle='width:7%;'><input type='number' min='0' max='${nums}' class='form-control' name='PH[]' value='${value['ph']}'  id=''></td>
-                    <td tyle='width:7%;'><input type='number' min='0' max='${nums}' class='form-control' name='PL[]' value='${value['pl']}'  id=''></td>
-                    <td id='proPH${i}'>${value['pro_ph']}</td>
-                    <td id='proPL${i}'>${value['pro_pl']}</td>
-                    <td name='descIndex${i}'>${value['desc_index'].toFixed(4)}</td>
-                    <td name='descRem${i}'>${value['desc_inter']}</td>
-                    <td name='diffIndex${i}'>${value['diff_index'].toFixed(4)}</td>
-                    <td name='diffRem${i}'>${value['diff_inter']}</td>
-                    <td name='finalRem${i}'>${value['final_rem']}</td>
-                </tr>`);
+                    <tr>
+                        <th scope='row' style='width:4%;' >${i} <input type="hidden" name="id[]" value="${value['id']}"></th>
+                        <td tyle='width:7%;'><input type='number' min='0' max='${nums}' class='form-control' name='PH[]' value='${value['ph']}'  id=''></td>
+                        <td tyle='width:7%;'><input type='number' min='0' max='${nums}' class='form-control' name='PL[]' value='${value['pl']}'  id=''></td>
+                        <td id='proPH${i}'>${value['pro_ph']}</td>
+                        <td id='proPL${i}'>${value['pro_pl']}</td>
+                        <td name='descIndex${i}'>${value['desc_index'].toFixed(4)}</td>
+                        <td name='descRem${i}'>${value['desc_inter']}</td>
+                        <td name='diffIndex${i}'>${value['diff_index'].toFixed(4)}</td>
+                        <td name='diffRem${i}'>${value['diff_inter']}</td>
+                        <td name='finalRem${i}'>${value['final_rem']}</td>
+                    </tr>`);
                 i++;
             });
 

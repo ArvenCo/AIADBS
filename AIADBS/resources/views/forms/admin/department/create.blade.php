@@ -2,48 +2,80 @@
 
 @section('content')
 
-<div class="container py-5">
-    <div class="row">
-        <div class="col-md-5 ">
-            <div class="card">
-                <div class="card-header bg-white border-0 text-center h1">{{ __('Register Department') }}</div>
-                <div class="card-body">
-                        <form action="">
-                            <div class="form-group">
-                                <label for="department" class="form-label">Department</label>
-                                <input type="text" name="department" id="department" class="form-control">
+<div class="container py-5 h-100 " style="">
+    <form action="/department" method="post" class="">
+        @csrf
+        <div class="card " style="height:100vh !important; ">
+            <div class="card-header text-center bg-light border-0 h1">Register Department</div>
+            <div class="card-body text-dark">
+                <div class="row g-3 d-flex align-content-start h-100">
+                    <div class="col-md-12 row">
+                        <div class="col-md-7">
+                            <div class="form-group ">
+                                <label for="department" class="form-input-label">Department</label>
+                                <input required type="text" name="department" placeholder="ex. College of Computing and Information Science - CCIS" id="department" class="form-control">
                             </div>
-                            <div class="form-group">
-                                <label for="subject" class="form-label">No. of Subject</label>
-                                <div class="row">
-                                    <div class="col-8">
-                                        <input type="number" name="" id="subjectNum" class="form-control ">
-                                    </div>
-                                    <a id="genrows" class="btn btn-secondary col-3">Generate</a>
+                        </div>
+                        <!-- <div class="col-md-3">
+                            <div class="form-group ">
+                                <label for="abbreviation" class="form-input-label">Abbreviation</label>
+                                <input required type="text" name="" id="abbreviation" class="form-control">
+                            </div>
+                        </div> -->
+                        
+                        <hr>
+                    </div>
+                    <div class="col-md-6 " style="height:78% !important;">
+                        <h1 class="text-center h3">Course</h1>
+                        <div class="input-group" >
+                            <input required type="number" value="1" name="" id="course-row" class="form-control">
+                            <a id="course-gen" class="btn btn-success">
+                                <i class="nav-icon fas fa-plus"></i>
+                            </a>
+                        </div>
+
+                            <a onclick="clearList('course')"class="btn btn-danger my-2 w-25">Clear</a>
+                        
+                        
+                        <div id="course-list" class="list-group border-top border-bottom " style="height:70% !important; overflow-y: auto !important;">
+                            <div id="1" class="list-group-item border-0">
+                                <div class="input-group">
+                                    <a id="1" onclick="remove('course',this.id)" class="btn btn-outline-danger text-center">
+                                        <i class="nav-icon fas fa-minus"></i>
+                                    </a>
+                                    <input required type="text" name="course[]" id="" placeholder="ex. Bachelor of Science in Information Technology - BSIT" class="form-control">
                                 </div>
                             </div>
-                            <br>
-                            <hr>
-                            <table class="table w-100">
-                                <a id="clear" class="btn btn-warning float-right">
-                                    Clear Rows
-                                </a>
-                                <div class="bg-white border-0 text-center h3">Subjects</div>
-                                <tbody>
-                                   
-                                </tbody>
-                                <br>
-                                <button class="btn btn-primary float-right">Register</button>
-                            </table>
-                            
-                        </form>
-                        
-
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="height:78% !important;">
+                        <h1 class="text-center h3">Subject</h1>
+                        <div class="input-group">
+                            <input required type="number" value="1" name="" id="subject-row" class="form-control">
+                            <a id="subject-gen" class="btn btn-success">
+                                <i class="nav-icon fas fa-plus"></i>
+                            </a>
+                        </div>
+                            <a onclick="clearList('subject')" class="btn btn-danger my-2 w-25">Clear</a>
+                        <div id="subject-list" class="list-group border-0 " style="height:70% !important; overflow-y: auto !important;">
+                            <div id="1" class="list-group-item border-0">
+                                <div class="input-group">
+                                    <a id="1" onclick="remove('subject',this.id)" class="btn btn-outline-danger text-center">
+                                        <i class="nav-icon fas fa-minus"></i>
+                                    </a>
+                                    <input required type="text" name="subject[]" id="" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
+            </div>
+            
+            <div class="card-footer bg-white border-0">
+                <button  class="btn btn-primary form-control float-right"> Register </button>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 
@@ -51,22 +83,78 @@
 
 @section('script')
 <script>
+    function clearList(container){
+        $(`#${container}-list>div`).remove();
+        
+        var placeholder = "";
+        if (container == 'course') placeholder = 'placeholder="ex. Bachelor of Science in Information Technology - BSIT"';
+        $(`#${container}-list`).append(`
+            <div id="1" class="list-group-item border-0">
+                <div class="input-group">
+                    <a id="1" onclick="removeThis(this.id)" class="btn btn-outline-danger text-center">
+                        <i class="nav-icon fas fa-minus"></i>
+                    </a>
+                    <input required type="text" name="${container}[]" ${placeholder} id="" class="form-control">
+                </div>
+            </div>
+        `);
+    }
+    function remove(container,$id) {
+       
+        $(`#${container}-list>div#`+$id).remove();
+    }
     
     $(document).ready(function(){
-        $("#genrows").click(function(){
-            var num = $('#subjectNum').val();
-            for (var i = 0; i < num; i++) {
-                $('table tbody').append(`
-                <tr>
-                    <td><input type="text" name="subject[]" id="" class="form-control border-dark"></td>
-                </tr>
+        var subjectRow = 1
+        $("#subject-gen").click(function(){
+            var num = $('#subject-row').val();
+            // $('#subject-list').empty();
+            subjectRow += 1;
+            for (var i = subjectRow; i < parseInt(num) + subjectRow; i++) {
+                $('#subject-list').append(`
+                    <div id="${i}" class="list-group-item border-0">
+                        <div class="input-group">
+                            <a id="${i}" onclick="remove('subject',this.id)" class="btn btn-outline-danger text-center">
+                                <i class="nav-icon fas fa-minus"></i>
+                            </a>
+                            <input required type="text" name="subject[]"  id="" class="form-control">
+                        </div>
+                    </div>
                 `);
             }
             
+            
+                
+            
         });
+        var courseRow = 1;
+        $("#course-gen").click(function(){
+            var num = $('#course-row').val();
+            // $('#course-list').empty();
+            courseRow += 1;
+            for (var i = courseRow; i < parseInt(num)  + courseRow; i++) {
+                $('#course-list').append(`
+                    <div id="${i}" class="list-group-item border-0">
+                        <div class="input-group">
+                            <a id="${i}" onclick="remove('course',this.id)" class="btn btn-outline-danger text-center">
+                                <i class="nav-icon fas fa-minus"></i>
+                            </a>
+                            <input required type="text" name="course[]" placeholder="ex. Bachelor of Science in Information Technology - BSIT" id="" class="form-control">
+                        </div>
+                    </div>
+                `);
+            }
+            
+                
+            
+        });
+        
+        
+        
         $('#clear').click(function() {
             $('table tbody').empty();
         });
+
     });
 </script>
 @endsection

@@ -34,8 +34,11 @@ class TestController extends Controller
     {
         //
         $user = Auth::user();
+        
+
         $test = Test::where('user_id',$user->id)->get();
-        $uri =$request->route()->uri();
+        $uri = $request->route()->uri();
+        
         
         
         return view('forms.test_index', ['tests' =>$test, 'uri' => $uri]);
@@ -47,13 +50,18 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         //
-        $test = Test::find($id);
+      
+        $user = Auth::user();
+        $educator_data = DB::table('educators')->where('user_id', $user->id)->get();
         
+        $subjects = DB::table('subjects')->where('department_id', $educator_data->first()->department_id)->select('name')->get();
 
-        return view('forms.test_create_set',['test' => $test]); 
+        $courses = explode(', ', $educator_data->first()->subjects);
+      
+        return view('forms.test_create',['courses' => $courses, 'subjects' => $subjects]);
         
     }
 
@@ -66,6 +74,9 @@ class TestController extends Controller
     public function store(Request $request)
     {
         //INSERT TO TESTS
+        $request->validate([
+            'textarea' => 'required|string'
+          ]);
         $userId = Auth::user()->id;
         
         $formData = $request;
@@ -102,7 +113,7 @@ class TestController extends Controller
             ]);
             $index++;
         }
-        return redirect()->back()->withErrors(['success'=>'Test has been created successfully.']);
+        return redirect('analysis/create/0')->withErrors(['success'=>'Test has been created successfully.']);
     }
 
     /**

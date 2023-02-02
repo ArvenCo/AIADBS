@@ -30,16 +30,18 @@ Route::middleware('auth')->get('/test', [App\Http\Controllers\TestController::cl
 Route::middleware('auth')->get('/analysis_list', [App\Http\Controllers\TestController::class, 'index']);
 Route::middleware('auth')->get('/print', [App\Http\Controllers\TestController::class, 'index']);
 Route::middleware('auth')->get('/databank', [App\Http\Controllers\TestController::class, 'index']);
-Route::middleware('auth')->get('/test/create', function(){
-    return view('forms.test_create');
-});
+// Route::middleware('auth')->get('/test/create', function(){
+//     return view('forms.test_create');
+// });
 
 Route::middleware('auth')->post('/test', [App\Http\Controllers\TestController::class, 'store']);
 
 Route::middleware('auth')->get('/test/show/{id}',[App\Http\Controllers\TestController::class, 'show']);
 
 
-Route::middleware('auth')->get('/test/{id}',[App\Http\Controllers\TestController::class, 'create']);
+//Route::middleware('auth')->get('/test/{id}',[App\Http\Controllers\TestController::class, 'create']);
+Route::middleware('auth')->get('/test/create',[App\Http\Controllers\TestController::class, 'create']);
+
 Route::middleware('auth')->post('/test/{id}',[App\Http\Controllers\TestController::class, 'update']);
 Route::middleware('auth')->post('/edittest/{id}',[App\Http\Controllers\TestController::class, 'edit']);
 Route::middleware('auth')->get('/analysis/',function(){
@@ -48,7 +50,7 @@ Route::middleware('auth')->get('/analysis/',function(){
 
 Route::middleware('auth')->post('/item/{id}',[App\Http\Controllers\ItemController::class, 'update']);
 
-Route::middleware('auth')->post('/analysis', [App\Http\Controllers\RemarkController::class , 'store']);
+Route::middleware('auth')->post('/analysis', [App\Http\Controllers\RemarkController::class , 'store'])->name('analysis.store');
 
 Route::middleware('auth')->get('/analysis/create/{id}',[App\Http\Controllers\RemarkController::class,'create']);
 Route::middleware('auth')->post('/analysis/update',[App\Http\Controllers\RemarkController::class,'update']);
@@ -56,10 +58,14 @@ Route::middleware('auth')->post('/analysis/update',[App\Http\Controllers\RemarkC
 Route::middleware('auth')->get('/analysis/{id}', [App\Http\Controllers\RemarkController::class , 'show']);
 
 Route::middleware('auth')->get('/print/show/{id}',[App\Http\Controllers\RemarkController::class,'show']);
+Route::middleware('auth')->get('/showData/{id}',[App\Http\Controllers\RemarkController::class,'showData'])->name('show.data');
 Route::middleware('auth')->get('/databank/show/{id}',[App\Http\Controllers\RemarkController::class,'show']);
 
 Route::middleware('auth')->get('/educator/create', [App\Http\Controllers\EducatorController::class,'create'])->name('educator.create');
+
 Route::middleware('auth')->get('/department/create', [App\Http\Controllers\DepartmentController::class,'create'])->name('department.create');
+Route::middleware('auth')->get('/departments', [App\Http\Controllers\DepartmentController::class,'index'])->name('department.index');
+Route::middleware('auth')->post('/department', [App\Http\Controllers\DepartmentController::class, 'store'])->name('department.register');
 
 Route::middleware('auth')->post('/educator', [App\Http\Controllers\MainController::class, 'register'])->name('educator.register');
 
