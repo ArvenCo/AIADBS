@@ -31,7 +31,7 @@
             $uri = Request::route()->uri();
             @endphp
         
-        @if(Auth::user()->id == 1)
+        @if(Auth::user()->role == 'admin')
         <li class="nav-item ">
           <a href="#" class="nav-link ">
             <i class="nav-icon fas fa-school"></i>
@@ -71,7 +71,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="./index.html" class="nav-link ">
+              <a href="/educators" class="nav-link ">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Show Educator</p>
               </a>
@@ -110,7 +110,7 @@
         </li>
         <li class="nav-item">
             <a href="/databank" class="nav-link {{ (request()->is('databank')) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-paperclip"></i>
+              <i class="fas fa-database"></i>
                 <p>
                     Data Bank
                 </p>

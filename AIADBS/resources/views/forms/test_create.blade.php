@@ -161,7 +161,7 @@
   var checkForm = function(form) {
 
   //
-  // validate form fields
+  // validate form field
   //
     $.get('');
     form.myButton.disabled = true;

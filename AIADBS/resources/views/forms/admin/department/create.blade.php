@@ -16,12 +16,19 @@
                                 <input required type="text" name="department" placeholder="ex. College of Computing and Information Science - CCIS" id="department" class="form-control">
                             </div>
                         </div>
-                        <!-- <div class="col-md-3">
-                            <div class="form-group ">
-                                <label for="abbreviation" class="form-input-label">Abbreviation</label>
-                                <input required type="text" name="" id="abbreviation" class="form-control">
+                        <div class="col-md-3">
+                            <label for="education-form" >Education Office</label>
+                            <div class="form-group" id="education-form">
+                                <div class="form-check form-check-inline" >
+                                    <input type="radio" name="education_office" value="DepEd" class="form-inline-check" id="DepEdRadio" required>
+                                    <label for="DepEdRadio" class="form-check-label">DepEd</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" name="education_office" value="CHED" class="form-inline-check" id="CHEDRadio">
+                                    <label for="CHEDRadio" class="form-check-label">CHED</label>
+                                </div>
                             </div>
-                        </div> -->
+                        </div>
                         
                         <hr>
                     </div>
@@ -35,8 +42,7 @@
                         </div>
 
                             <a onclick="clearList('course')"class="btn btn-danger my-2 w-25">Clear</a>
-                        
-                        
+        
                         <div id="course-list" class="list-group border-top border-bottom " style="height:70% !important; overflow-y: auto !important;">
                             <div id="1" class="list-group-item border-0">
                                 <div class="input-group">

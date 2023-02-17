@@ -56,11 +56,8 @@ class TestController extends Controller
       
         $user = Auth::user();
         $educator_data = DB::table('educators')->where('user_id', $user->id)->get();
-        
         $subjects = DB::table('subjects')->where('department_id', $educator_data->first()->department_id)->select('name')->get();
-
         $courses = explode(', ', $educator_data->first()->subjects);
-      
         return view('forms.test_create',['courses' => $courses, 'subjects' => $subjects]);
         
     }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Educator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 class EducatorController extends Controller
 {
     /**
@@ -15,8 +17,14 @@ class EducatorController extends Controller
     public function index()
     {
         //
+        $educators = Educator::rightjoin('users','users.id', '=', 'user_id')->where('users.role', '=', 'instructor')->get();
+        return view('forms.admin.educator.index',['educators' => $educators]);
     }
 
+    public function getDepartmentId($id){
+        $departmentId = DB::table('educators')->where('user_id', '=', $id)->get();
+        return ['educator' => $departmentId];
+    }
     /**
      * Show the form for creating a new resource.
      *

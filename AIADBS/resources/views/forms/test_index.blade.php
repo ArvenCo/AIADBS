@@ -30,7 +30,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-           
+          
             <h1 class="m-0">{{$page}}</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
@@ -68,7 +68,7 @@
                                 <th>Number 
                                   of 
                                   Students</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody style=";">
@@ -81,34 +81,51 @@
                                 <td>{{$test->date_given}}</td>
                                 <td>{{$test->num_of_students}}</td>
                                 <td class="">
-                                  @if($uri == 'analysis_list')
-                                  <a href="analysis/create/{{$test->id}}"  class="btn btn-info btn-xs" 
-                                  data-toggle="tooltip" data-placement="top" title="Item Analysis"> 
-                                    <i class="fas fa-chart-bar text-white"></i>
-                                  </a>
-                                  <a href="analysis/{{$test->id}}" class="btn btn-info btn-xs"
-                                  data-toggle="tooltip" data-placement="top" title="Edit Item Analysis">
-                                    <i class="fas fa-edit text-white"></i>
-                                  </a>
-                                  @endif
-                                  @if($uri == 'print')
-                                  <a href="print/show/{{$test->id}}" class="btn btn-info btn-xs"
-                                  data-toggle="tooltip" data-placement="top" title="Item Analysis">
-                                    <i class="fas fa-print text-white"></i>
-                                  </a>
-                                  @endif
-                                  @if($uri == 'databank')
-                                  <a href="databank/show/{{$test->id}}" class="btn btn-info btn-xs"
-                                  data-toggle="tooltip" data-placement="top" title="Items">
-                                    <i class="far fa-copy text-white"></i>
-                                  </a>
-                                  @endif
-                                  @if($uri == 'test')
-                                  <a href="test/show/{{$test->id}}" class="btn btn-info btn-xs"
-                                  data-toggle="tooltip" data-placement="top" title="Edit">
-                                    <i class="fas fa-edit text-white"></i>
-                                  </a>
-                                  @endif
+
+                                  <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle w-100" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Action
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-center">
+                                      @if($uri == 'analysis_list')
+                                      <a href="analysis/create/{{$test->id}}"  class="dropdown-item" 
+                                      data-toggle="tooltip" data-placement="top" title="Item Analysis"> 
+                                        <i class="fas fa-chart-bar "></i>
+                                        Item Analysis
+                                      </a>
+                                      <a href="analysis/{{$test->id}}" class="dropdown-item"
+                                      data-toggle="tooltip" data-placement="top" title="Edit Item Analysis">
+                                        <i class="fas fa-edit "></i>
+                                        Edit Analysis
+                                      </a>
+                                      @endif
+
+                                      @if($uri == 'print')
+                                      <a href="print/show/{{$test->id}}" class="dropdown-item"
+                                      data-toggle="tooltip" data-placement="top" title="Item Analysis">
+                                        <i class="fas fa-print "></i>
+                                        Item Analysis
+                                      </a>
+                                      @endif
+
+                                      @if($uri == 'databank')
+                                      <a href="databank/show/{{$test->id}}" class="dropdown-item"
+                                      data-toggle="tooltip" data-placement="top" title="Items">
+                                        <i class="far fa-copy "></i>
+                                        Items 
+                                      </a>
+                                      @endif
+                                      
+                                      @if($uri == 'test')
+                                      <a href="test/show/{{$test->id}}" class="dropdown-item"
+                                      data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="fas fa-edit "></i>
+                                        Edit
+                                      </a>
+                                      @endif
+                                    </div>
+                                  </div>
+                                  
                                 </td>
                               </tr>
                             @endforeach

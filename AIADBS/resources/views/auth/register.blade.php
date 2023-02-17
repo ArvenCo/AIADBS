@@ -50,8 +50,6 @@
                         <div class="form-group">
                             <label for="password-confirm" >{{ __('Confirm Password') }}</label>
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-
-                            
                         </div>
                         <br>
                         <div class="row d-flex justify-content-center">

@@ -20,10 +20,48 @@ class DepartmentController extends Controller
         return view('forms.admin.department.index',$this->getDepartments());
 
     }
+    
+    public function getDepartmentsBy($office){
+        $departments = Department::where('education_office','=',$office)->get();
 
-    public function getDepartments(){
+        $department_array = array();
+        
+        foreach ($departments as $department ){
+            $id = $department->id;
+
+            $course_array = array();
+            $courses = DB::table('courses')->where('department_id',$id)->get();
+            foreach ($courses as $course){
+                $data = array(
+                    'id' => $course->id,
+                    'name' => $course->name,
+                    'abbreviation' => $course->abbreviation
+                );
+                array_push($course_array,$data);
+            }
+
+            $subject_array = array();
+            $subjects = DB::table('subjects')->where('department_id',$id)->get();
+            foreach( $subjects as $subject){
+                $data = array(
+                    'id' => $subject->id,
+                    'name' => $subject->name,
+                );
+                
+                array_push($subject_array,$data);
+            }
+
+            $department_array[$id] = array(  'course' => $course_array,'subject' =>$subject_array) ;
+            
+        }
+        
+        return ['departments' => $departments, 'department_array' => $department_array];
+    }
+
+    public function getDepartments()
+    {
         $departments = Department::all();
-        $contents = array();
+       
         
         $department_array = array();
 
@@ -53,8 +91,9 @@ class DepartmentController extends Controller
             }
 
             $department_array[$id] = array(  'course' => $course_array,'subject' =>$subject_array) ;
-            return ['departments' => $departments, 'department_array' => $department_array];
+            
         }
+        return ['departments' => $departments, 'department_array' => $department_array];
     }
 
     /**
@@ -85,14 +124,14 @@ class DepartmentController extends Controller
         
         $department_id = Department::insertGetId([
            'name' => $name,
-           'abbreviation' => $abbreviation
+           'abbreviation' => $abbreviation,
+           'education_office' => $request->education_office
         ]);
         
 
         
-        $courses = request('course');
-        if (count($courses) > 0){
-
+        if ($request->has('course')){
+            $courses = request('course');
             foreach ($courses as $course){
                 $data = explode('-', $course);
                 $name = $data[0];
@@ -106,8 +145,9 @@ class DepartmentController extends Controller
         }
         
 
-        $subjects = request('subject');
-        if (count($subjects) > 0){
+        
+        if ($request->has('subject')){
+            $subjects = request('subject');
             foreach ($subjects as $subject){
                 DB::table('subjects')->insert([
                     'name' => $subject,
@@ -115,7 +155,8 @@ class DepartmentController extends Controller
                 ]);
             }
         }
-            
+
+        return back();
         
     }
 

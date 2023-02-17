@@ -39,6 +39,17 @@
                                 </div>
                             </div>
                             <div class="col-6">
+                                <label for="education-form" >Education Office</label>
+                                <div class="form-group" id="education-form">
+                                    <div class="form-check form-check-inline" >
+                                        <input type="radio" name="education_office" value="DepEd" class="form-inline-check" id="DepEdRadio" required>
+                                        <label for="DepEdRadio" class="form-check-label">DepEd</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" name="education_office" value="CHED" class="form-inline-check" id="CHEDRadio">
+                                        <label for="CHEDRadio" class="form-check-label">CHED</label>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="department">Department</label>
                                     <select name="department" id="department" class="form-select overflowx-auto" style="width:100% !important;">
@@ -49,7 +60,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Assigned Subjects</label>
+                                    <label for="">Assigned Courses</label>
                                     <div id="subject-list" class="list-group border-0 mh-50 overflow-auto" style="max-height: 31vh !important;">
                                         
                                     </div>

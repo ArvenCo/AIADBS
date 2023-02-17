@@ -30,11 +30,14 @@
                             {{$department->name}} - {{$department->abbreviation}}
                         </td>
                         <td style="width: 1% !important; white-space: nowrap !important;">
-                            <a href="" class="btn btn-danger">Trash</a>
+                            <div class="dropdown">
+                                <a href="#" class="btn btn-secondary dropdown-toggle" 
+                                role="button"data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    
+                                </a>
+                            </div>
                         </td>
                     </tr>
-
-                    
                     @endforeach
                 </tbody>
                 
@@ -53,7 +56,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -69,13 +71,6 @@
 
 @section('script')
     @include('forms.modules.datatable.scripts')
-<script>
-    const myModal = document.getElementById('myModal')
-    const myInput = document.getElementById('myInput')
 
-    myModal.addEventListener('shown.bs.modal', () => {
-    myInput.focus()
-    })
-</script>
 
 @endsection

@@ -149,6 +149,7 @@
 </script>
 
 @yield('script')
+@yield('layout-nav-script')
 
 
 </body>

@@ -15,6 +15,15 @@ class SubjectController extends Controller
     public function index()
     {
         //
+        
+    }
+    
+    public function subjectsBy($department){
+        
+        $subjects = Subject::rightjoin('departments', 'department_id', '=', 'departments.id')
+        ->where('department_id', '=', $department)
+        ->select('subjects.name as subject',)->get();
+        return ['subjects' => $subjects];
     }
 
     /**

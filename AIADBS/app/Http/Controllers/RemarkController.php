@@ -22,7 +22,16 @@ class RemarkController extends Controller
     {
         //
 
+        $items = Remark::rightjoin('items', 'remarks.item_id', '=', 'items.id')
+                ->rightjoin('sets', 'sets.id', '=', 'items.set_id')
+                ->rightjoin('tests', 'tests.id', '=', 'test_id')
+                ->get();
+
+        return ['items' => $items];
+
     }
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -45,7 +54,7 @@ class RemarkController extends Controller
         $tests = Test::find($id);
         $sets = Set::leftjoin('items','sets.id','=', 'items.set_id' )
         ->leftjoin('remarks', 'items.id', '=', 'remarks.item_id')
-        ->where('test_id', '=', $id)//->where('remarks.id', '=', null)
+        ->where('test_id', '=', $id)
         ->select('sets.id','set_name',DB::raw('count(*) as total'))
         ->groupby('sets.id','set_name')->get();
         

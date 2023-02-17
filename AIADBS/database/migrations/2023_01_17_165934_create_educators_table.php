@@ -17,31 +17,89 @@ class CreateEducatorsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('department_id')->constrained('departments');
+            $table->string('education_office');
             $table->string('subjects',10000);
             $table->timestamps();
         });
 
-
-        $data = array(
-            'CCIS:College of Computing and Information Science' => 
-                array('courses' => array('BSIT:Bachelor of Science in Information Technology',
-                    'BSCS:Bachelor of Science in Computer Science',
-                    'BLIS:Bachelor of Library and Information Science'),
-                'subjects' => array('Programming 1', 'Programming 2', 'Programming 3', 'Programming 4', 'Programming 5', 'Programming 6','Programming 7','Programming 8','Programming 9','Programming 10'),
-            ),
-        );
+        // $data = array(
+        //     'CCIS:College of Computing and Information Science' =>array(
+        //         'courses' =>array(
+        //             'BSIT:Bachelor of Science in Information Technology',
+        //             'BSCS:Bachelor of Science in Computer Science',
+        //             'BLIS:Bachelor of Library and Information Science'
+        //         ),
+        //         'subjects' => array(
+        //             'Programming 1', 'Programming 2', 'Programming 3', 
+        //             'Programming 4', 'Programming 5', 'Programming 6',
+        //             'Programming 7','Programming 8','Programming 9',
+        //             'Programming 10'
+        //         ),
+        //         'education_office' => 'CHED'
+                
+        //     ),
+        // );
 
         $data = array(
             'CCIS:College of Computing and Information Science' => array(
-                'courses' => array(
-                    'BSIT:Bachelor of Science in Information Technology',
-                    'BSCS:Bachelor of Science in Computer Science',
-                    'BLIS:Bachelor of Library and Information Science'
-                    )
-                
+                'course' => array(
+                    'BSIT: Bachelor of Science in Information Technology',
+                    'BSCS: Bachelor of Science in Computer Science',
+                    'BLIS: Bachelor of Library and Information Science'
+                ),
+                'education_office' => 'CHED'
             ),
+            'CAS: College of Arts and Sciences' => array(
+                'course' => array(
+                    'AB English: Bachelor of Arts major in English Language'
+                ),
+                'education_office' => 'CHED'
+            ),
+            'CCJE: College of Criminal Justice Education' => array(
+                'course' => array(
+                    'Bachelor of Science in Industrial Security Management',
+                    'BSCrim: Bachelor of Science in Criminology'
+                ),
+                'education_office' => 'CHED'
+            ),
+            'CTE: College of Teacher Education' => array(
+                'course' => array(
+                    'BEED: Bachelor of Elementary Education',
+                    'BSEd English: Bachelor of Secondary Education major in English',
+                    'BSEd Science: Bachelor of Secondary Education major in Science',
+                    'BSEd Soc Stud: Bachelor of Secondary Education major in Social Studies',
+                    'BPEd: Bachelor of Physical Education',
+                    'BTVTE: Bachelor of Technical Vocational Teacher Education',
+                    'Bachelor of Early Childhood Education'
+                ),
+                'education_office' => 'CHED'
+            ),
+            'CTHBAM: College of Tourism, Hospitality, Business and Management' => array(
+                'course' => array(
+                    'BSBA FM: Bachelor of Science in Business Administration major in Financial Management',
+                    'BSBA HRM: Bachelor of Science in Business Administration major in Human Resource Management',
+                    'BSBA MM: Bachelor of Science in Business Administration major in Marketing Management',
+                    'BSHM: Bachelor of Science in Hospitality Management',
+                    'BPA: Bachelor of Public Administration',
+                    'BSE: Bachelor of Science in Entrepreneurship',
+                    'BSTM: Bachelor of Science in Tourism Management'
+                ),
+                'education_office' => 'CHED'
+            ),
+            'TED: Technical Education Department' => array(
+                'course' => array(
+                    'Diploma in Hospitality Management Technology',
+                    'Diploma in Tourism Management Technology',
+                    'Diploma in Information Technology',
+                    'Ship\'s Catering Services NC I',
+                    'Food and Beverage Services NC II',
+                    'Housekeeping NC II'
+                ),
+                'education_office' => 'CHED'
+            )
         );
         
+
         foreach($data as $key => $value){
 
             $department = explode(':', $key);
@@ -51,8 +109,9 @@ class CreateEducatorsTable extends Migration
             $dep_id = DB::table('departments')->insert([
                 'name' => $name,
                 'abbreviation' => $abbrev,
+                'education_office' => $value['education_office'],
             ]);
-
+            
             foreach($value as $key1 => $values){
                 if ($key1 == 'courses'){
                     foreach ($values as $value1){
@@ -67,8 +126,7 @@ class CreateEducatorsTable extends Migration
                         ]);
                     }
                     
-                }else{
-                    
+                }elseif($key1 == 'subjects'){
                     foreach( $values as $value1){
                         DB::table('subjects')->insert([
                             'name' => $value1,
