@@ -32,63 +32,23 @@
             @endphp
         
         @if(Auth::user()->role == 'admin')
-        <li class="nav-item ">
-          <a href="#" class="nav-link ">
+        <li class="nav-item">
+          <a href="/departments"  class="nav-link ">
             <i class="nav-icon fas fa-school"></i>
             <p>
               Department
-              <i class="right fas fa-angle-left"></i>
+              {{-- <i class="right fas fa-angle-left"></i> --}}
             </p>
           </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="/departments" class="nav-link ">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Departments</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('department.create')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Add Department</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./index3.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Update Department</p>
-              </a>
-            </li>
-          </ul>
         </li>
         <li class="nav-item ">
-          <a href="#" class="nav-link ">
+          <a href="/educators" class="nav-link ">
             <i class="nav-icon fas fa-user-graduate"></i>
             <p>
               Educator
-              <i class="right fas fa-angle-left"></i>
+              {{-- <i class="right fas fa-angle-left"></i> --}}
             </p>
           </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="/educators" class="nav-link ">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Show Educator</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{ route('educator.create')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Create Educator</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./index3.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Update Educators</p>
-              </a>
-            </li>
-          </ul>
         </li>
         
         @else

@@ -47,7 +47,7 @@ class MainController extends Controller
         if($save){
             return back()->withErrors(['success'=>'User registration success.']);
         }else{
-            return back()->withErrors(['fail'=>'Registration failed.']);
+            return back()->withErrors(['error'=>'Registration failed.']);
         }
     }
     
@@ -83,7 +83,7 @@ class MainController extends Controller
             //throw $th;
             return ['error' => $e->validator->errors()->first()];
         } catch (Exception $e) {
-            return ['error' => 'Exception error'];
+            return ['error' => $e->getMessage()];
         }
     }
 }

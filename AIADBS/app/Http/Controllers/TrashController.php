@@ -36,6 +36,33 @@ class TrashController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $collection = $request->collection;
+            $trash = new Trash();
+
+            switch ($collection) {
+                case 'Department':
+                    $trash->department_id = $request->id;
+                    break;
+                
+                case 'Subject':
+                    $trash->subject_id = $request->id;
+                    break;
+
+                case 'Course':
+                    $trash->course_id = $request->id;
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            $save = $trash->save();
+            if ($save){
+                return ['success' => $collection.' has been trashed.'];
+            }
+        } catch (Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
     }
 
     /**

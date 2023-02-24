@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use App\Exceptions\Handler;
+
 class EducatorController extends Controller
 {
     /**
@@ -57,9 +59,18 @@ class EducatorController extends Controller
      * @param  \App\Models\Educator  $educator
      * @return \Illuminate\Http\Response
      */
-    public function show(Educator $educator)
+    public function show($id)
     {
         //
+        try {
+            //code...
+            $user = DB::table('users')->rightjoin('educators', 'educators.user_id', '=', 'users.id')
+            ->where('users.id', '=', $id)->select('users.id as id','name', 'email', 'subjects')->first();
+            return ['user' => $user];
+        } catch (Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+        
     }
 
     /**

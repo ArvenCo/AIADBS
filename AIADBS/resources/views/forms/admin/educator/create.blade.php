@@ -108,9 +108,8 @@
                         </div>
                     `);
                 });
-                
             });
-        })
+        });
 
         $('#name').on('keypress blur',function(){
         var array  =  $('#name').val().split(' ');
@@ -125,10 +124,6 @@
             if (first.length >0) firstN = first.length;
             var lastN ="" ;
             if (last.length > 0) lastN = last.length; 
-
-
-
-
             $('#email').val((first + last+ firstN + lastN).toLowerCase());
         }
         });

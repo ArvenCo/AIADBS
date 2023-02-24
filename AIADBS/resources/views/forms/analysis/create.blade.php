@@ -204,7 +204,6 @@
                                     <table class="table-bordered" style="width:100%;">
                                         <tr>
                                             <td colspan=2  class="font-weight-bold">Statistics:</td>
-                                            
                                         </tr>
                                         <tr>
                                             <td style="width:50%;" class="text-right">No. of Retained items:</td>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
+use App\Exceptions\Handler;
+
 class SubjectController extends Controller
 {
     /**
@@ -20,9 +22,7 @@ class SubjectController extends Controller
     
     public function subjectsBy($department){
         
-        $subjects = Subject::rightjoin('departments', 'department_id', '=', 'departments.id')
-        ->where('department_id', '=', $department)
-        ->select('subjects.name as subject',)->get();
+        $subjects = Subject::where('department_id','=' ,$department)->get();
         return ['subjects' => $subjects];
     }
 
@@ -34,6 +34,7 @@ class SubjectController extends Controller
     public function create()
     {
         //
+        
     }
 
     /**
@@ -45,6 +46,18 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $subject = new Subject;
+            $subject->name = $request->subject;
+            $subject->department_id = $request->department_id;
+            $save = $subject->save();
+            if ($save) {
+                return ['Subject saved successfully'];
+            }
+        } catch ( Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+        
     }
 
     /**
@@ -87,8 +100,10 @@ class SubjectController extends Controller
      * @param  \App\Models\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subject $subject)
+    public function destroy(Subject $subject, Request $request)
     {
         //
+        $subject = $subject->find($request->id);
+        $subject->delete();
     }
 }

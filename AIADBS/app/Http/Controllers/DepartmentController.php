@@ -17,18 +17,19 @@ class DepartmentController extends Controller
     {
         //
   
-        return view('forms.admin.department.index',$this->getDepartments());
+        return view('forms.admin.department.index', $this->getDepartments());
 
     }
     
     public function getDepartmentsBy($office){
-        $departments = Department::where('education_office','=',$office)->get();
+        $departments = Department::leftjoin('trashes', 'trashes.department_id','=', 'departments.id')
+        ->whereNull('trashes.id')->select('departments.id AS id', 'name', 'abbreviation')
+        ->where('education_office','=',$office)->get();
 
         $department_array = array();
         
-        foreach ($departments as $department ){
+        foreach ($departments as $department){
             $id = $department->id;
-
             $course_array = array();
             $courses = DB::table('courses')->where('department_id',$id)->get();
             foreach ($courses as $course){
@@ -51,8 +52,7 @@ class DepartmentController extends Controller
                 array_push($subject_array,$data);
             }
 
-            $department_array[$id] = array(  'course' => $course_array,'subject' =>$subject_array) ;
-            
+            $department_array[$id] = array(  'course' => $course_array,'subject' =>$subject_array);
         }
         
         return ['departments' => $departments, 'department_array' => $department_array];
@@ -60,7 +60,10 @@ class DepartmentController extends Controller
 
     public function getDepartments()
     {
-        $departments = Department::all();
+        $departments = Department::leftjoin('trashes', 'trashes.department_id','=', 'departments.id')
+        ->whereNull('trashes.id')
+        ->select('departments.id AS id', 'name', 'abbreviation')
+        ->get();
        
         
         $department_array = array();
@@ -166,9 +169,15 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department)
+    public function show(Department $department, $id)
     {
         //
+
+        $department = $department->find($id);
+        $courses = DB::table('courses')->where('department_id', '=',$department->id);
+        
+        return response()->json($department);
+        
     }
 
     /**

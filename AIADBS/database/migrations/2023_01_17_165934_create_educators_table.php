@@ -42,7 +42,7 @@ class CreateEducatorsTable extends Migration
 
         $data = array(
             'CCIS:College of Computing and Information Science' => array(
-                'course' => array(
+                'courses' => array(
                     'BSIT: Bachelor of Science in Information Technology',
                     'BSCS: Bachelor of Science in Computer Science',
                     'BLIS: Bachelor of Library and Information Science'
@@ -50,20 +50,20 @@ class CreateEducatorsTable extends Migration
                 'education_office' => 'CHED'
             ),
             'CAS: College of Arts and Sciences' => array(
-                'course' => array(
+                'courses' => array(
                     'AB English: Bachelor of Arts major in English Language'
                 ),
                 'education_office' => 'CHED'
             ),
             'CCJE: College of Criminal Justice Education' => array(
-                'course' => array(
+                'courses' => array(
                     'Bachelor of Science in Industrial Security Management',
                     'BSCrim: Bachelor of Science in Criminology'
                 ),
                 'education_office' => 'CHED'
             ),
             'CTE: College of Teacher Education' => array(
-                'course' => array(
+                'courses' => array(
                     'BEED: Bachelor of Elementary Education',
                     'BSEd English: Bachelor of Secondary Education major in English',
                     'BSEd Science: Bachelor of Secondary Education major in Science',
@@ -75,7 +75,7 @@ class CreateEducatorsTable extends Migration
                 'education_office' => 'CHED'
             ),
             'CTHBAM: College of Tourism, Hospitality, Business and Management' => array(
-                'course' => array(
+                'courses' => array(
                     'BSBA FM: Bachelor of Science in Business Administration major in Financial Management',
                     'BSBA HRM: Bachelor of Science in Business Administration major in Human Resource Management',
                     'BSBA MM: Bachelor of Science in Business Administration major in Marketing Management',
@@ -87,7 +87,7 @@ class CreateEducatorsTable extends Migration
                 'education_office' => 'CHED'
             ),
             'TED: Technical Education Department' => array(
-                'course' => array(
+                'courses' => array(
                     'Diploma in Hospitality Management Technology',
                     'Diploma in Tourism Management Technology',
                     'Diploma in Information Technology',
@@ -105,8 +105,7 @@ class CreateEducatorsTable extends Migration
             $department = explode(':', $key);
             $name = $department[1];
             $abbrev = $department[0];
-
-            $dep_id = DB::table('departments')->insert([
+            $dep_id = DB::table('departments')->insertGetId([
                 'name' => $name,
                 'abbreviation' => $abbrev,
                 'education_office' => $value['education_office'],
@@ -116,8 +115,8 @@ class CreateEducatorsTable extends Migration
                 if ($key1 == 'courses'){
                     foreach ($values as $value1){
                         $course = explode(':', $value1);
-                        $abbrev = $course[0];
-                        $name = $course[1];
+                        $abbrev =count($course) > 1 ? $course[0] : null;
+                        $name =count($course) > 1 ? $course[1] : $course[0];
                         
                         DB::table('courses')->insert([
                             'name' => $name,
@@ -133,8 +132,6 @@ class CreateEducatorsTable extends Migration
                             'department_id' => $dep_id
                         ]);
                     }
-                    
-
                 }
             }
         }        

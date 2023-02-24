@@ -33,7 +33,6 @@
   <!-- Toastr -->
   <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
   
-  
   @yield('head')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -150,7 +149,6 @@
 
 @yield('script')
 @yield('layout-nav-script')
-
 
 </body>
 </html>

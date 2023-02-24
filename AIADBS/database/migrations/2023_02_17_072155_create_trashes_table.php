@@ -15,6 +15,10 @@ class CreateTrashesTable extends Migration
     {
         Schema::create('trashes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('department_id')->nullable()->constrained('departments');
+            $table->foreignId('course_id')->nullable()->constrained('courses');
+            $table->foreignId('subject_id')->nullable()->constrained('subjects');
             $table->timestamps();
         });
     }

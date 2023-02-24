@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Trash extends Model
 {
     use HasFactory;
+
+    
+
 }

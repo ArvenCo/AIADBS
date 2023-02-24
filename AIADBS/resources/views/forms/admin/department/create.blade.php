@@ -128,10 +128,6 @@
                     </div>
                 `);
             }
-            
-            
-                
-            
         });
         var courseRow = 1;
         $("#course-gen").click(function(){
@@ -150,9 +146,6 @@
                     </div>
                 `);
             }
-            
-                
-            
         });
         
         

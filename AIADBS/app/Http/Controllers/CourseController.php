@@ -36,6 +36,8 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         //
+       
+        
     }
 
     /**
