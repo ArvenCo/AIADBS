@@ -10,6 +10,8 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\TrashController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AnswerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,7 +74,6 @@ Route::middleware('auth')->get('/departments', [DepartmentController::class,'ind
 Route::middleware('auth')->post('/department', [DepartmentController::class, 'store'])->name('department.register');
 Route::middleware('auth')->get('/getfunction/{office}', [DepartmentController::class, 'getDepartmentsBy'])->name('department.getDepartment');
 
-
 Route::middleware('auth')->get('/educators', [EducatorController::class, 'index'])->name('educator.index');
 Route::middleware('auth')->post('/educator', [MainController::class, 'register'])->name('educator.register');
 Route::middleware('auth')->post('/update-account/{id}', [MainController::class, 'update'])->name('account.update');
@@ -88,6 +89,18 @@ Route::group(['middleware' => 'auth', 'prefix' => 'subject'],function(){
     Route::post('store', [SubjectController::class, 'store']);
     Route::post('destroy', [SubjectController::class, 'destroy']);
         
+});
+
+Route::prefix('answer')->middleware('auth')->group(function () {
+    Route::post('store', [AnswerController::class, 'store']);
+    // Route::get('create/{id}', [AnswerController::class, 'create']);
+    
+    
+    
+});
+
+Route::prefix('items')->group(function () {
+    Route::get('/index/{id}', [ItemController::class, 'index'])->name('items.index');
 });
 Route::middleware('auth')->get('/subjects-by/{department}', [SubjectController::class, 'subjectsBy'])->name('subjects-by-department');
 

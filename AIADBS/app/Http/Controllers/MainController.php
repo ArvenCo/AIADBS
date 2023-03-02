@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 
 use Illuminate\Validation\ValidationException;
-use Illuminate\Contracts\Validation\Rule;
-
 
 class MainController extends Controller
 {

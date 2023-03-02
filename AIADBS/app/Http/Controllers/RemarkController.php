@@ -170,6 +170,8 @@ class RemarkController extends Controller
               ->where('set_id', $id)->get(); 
       return ['items' => $items, 'sets' => $sets];
     }
+
+
     public function show(Request $request,Remark $remark, $id)
     {
         //
@@ -193,7 +195,10 @@ class RemarkController extends Controller
             $itemMisc = [];    
             foreach ($items as $item){
                 $data = [];
-                $data = Remark::rightJoin('items','items.id','=','item_id')->where('item_id',$item->id)->get();
+                $data = Remark::rightJoin('items','items.id','=','item_id')
+                ->rightjoin('answers', 'item_id', '=', 'items.id')
+                ->where('item_id',$item->id)
+                ->select('remarks.id as id','item_string','ph','pl','pro_ph','pro_pl','desc_index','diff_index','desc_inter','diff_inter','final_rem','answer',)->get();
                 
                 if ($data->isEmpty()) {
                   continue;
@@ -210,6 +215,7 @@ class RemarkController extends Controller
                     'desc_inter' => $this->getDescInter($data->first()->desc_index),
                     'diff_inter' => $this->getDiffInter($data->first()->diff_index),
                     'final_rem' => $data->first()->final_rem,
+                    'answer' => $data->first()->answer,
                 ];
                 
                 array_push($itemsArray ,$itemMisc);

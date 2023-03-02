@@ -108,6 +108,7 @@
             $('#item-container').empty();
 
             searchItemBy(this.value, function (data){
+                console.log(data);
                 var i =1;
                 if (data.length < 1) {
                     $('#item-container').text('No results found');
@@ -116,6 +117,15 @@
                 $.each(data.items, function (index, value) { 
                     $('#item-container').append(i + ". " + value.item_string);
                     i+=1;
+                });
+                $('#item-container').append('\n\n\nAnswers:\n');
+                var j = 1;
+
+                $.each(data.items, function (index, value) { 
+                    
+                    $('#item-container').append(j + ". " + value.answer +'\n');
+                        j+=1;
+                    
                 });
             });
             
@@ -127,7 +137,7 @@
                 var i =1;
                 $('#item-container').empty();
                 $.each(data.items, function (index, value) { 
-                    var remark = $('#selector').val()
+                    var remark = $('#selector').val();
                     if (remark == value.final_rem){
                         $('#item-container').append(i + ". " + value.item_string);
                         i+=1;
@@ -135,6 +145,19 @@
                     if(remark == "*"){
                         $('#item-container').append(i + ". " + value.item_string);
                         i+=1;
+                    }
+                });
+                $('#item-container').append('\n\n\nAnswers:\n');
+                var j = 1;
+                $.each(data.items, function (index, value) { 
+                    var remark = $('#selector').val();
+                    if (remark == value.final_rem){
+                        $('#item-container').append(j + ". " + value.answer +'\n');
+                        j+=1;
+                    }
+                    if(remark == "*"){
+                        $('#item-container').append(j + ". " + value.answer +'\n');
+                        j+=1;
                     }
                 });
             });

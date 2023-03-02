@@ -186,7 +186,7 @@
             }
             $('#subject-modal').modal('toggle');
         }
-
+        
         function addSubject(){
             var subject = $('#subject-add').val();
             var data = $('#form-subject').serialize();

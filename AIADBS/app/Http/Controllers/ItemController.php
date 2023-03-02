@@ -12,17 +12,22 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
         //
+        $items = Item::leftjoin('answers', 'item_id', '=', 'items.id')->where('set_id', '=', $id)->
+        select('items.id as id', 'item_string', 'answers.id as answer_id','answer')->get();
+        return ['items' => $items];
+        
     }
 
     public function itemsBy($subject){
         $items = Item::rightjoin('sets','set_id', '=', 'sets.id')
-        ->rightjoin('remarks', 'item_id', '=', 'items.id')
+        ->rightjoin('remarks', 'remarks.item_id', '=', 'items.id')
         ->rightjoin('tests', 'test_id', '=', 'tests.id')
+        ->leftjoin('answers', 'answers.item_id', '=', 'items.id')
         ->where('subject', '=', $subject)
-        ->select('item_string', 'final_rem')->get();
+        ->select('item_string', 'final_rem','answer')->get();
         return ['items' => $items];
     }
 

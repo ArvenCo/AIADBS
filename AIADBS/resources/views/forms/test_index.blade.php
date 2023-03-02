@@ -88,6 +88,7 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-center">
                                       @if($uri == 'analysis_list')
+                                      
                                       <a href="analysis/create/{{$test->id}}"  class="dropdown-item" 
                                       data-toggle="tooltip" data-placement="top" title="Item Analysis"> 
                                         <i class="fas fa-chart-bar "></i>
@@ -117,6 +118,11 @@
                                       @endif
                                       
                                       @if($uri == 'test')
+                                      <a href="answer/create/{{$test->id}}"  class="dropdown-item" 
+                                        data-toggle="tooltip" data-placement="top" title="Item Analysis"> 
+                                          <i class="fas fa-chart-bar "></i>
+                                          Answer the Test
+                                      </a>
                                       <a href="test/show/{{$test->id}}" class="dropdown-item"
                                       data-toggle="tooltip" data-placement="top" title="Edit">
                                         <i class="fas fa-edit "></i>

@@ -447,6 +447,8 @@
         var items = @json($setItems);
         var appendvalue = "";
         var counter = 0;
+        var answers = "";
+        
         if ($(this).val() == "reject"){
             
             $('small.text-danger').html('Danger! Rejected Item.');
@@ -456,14 +458,18 @@
             if ($('select#remark').val()==value['final_rem']){
                 counter += 1;
                 appendvalue += counter.toString() +'. ' + value['item_string'];
+                answers += counter.toString() +'. ' + value['answers']+'\n';
             }else if ($('select#remark').val() == 'all') {
                 counter += 1;
                 appendvalue += counter.toString() +'. ' + value['item_string'];
+                answers += counter.toString() +'. ' + value['answers']+'\n';
+                
             }
             
             
         });
-        $('textarea').val(appendvalue);
+        console.log(answers);
+        $('textarea').val(appendvalue+'\n\n\n'+answers);
        
     });
 </script>
