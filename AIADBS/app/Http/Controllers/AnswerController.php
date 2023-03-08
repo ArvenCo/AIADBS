@@ -53,7 +53,7 @@ class AnswerController extends Controller
             $answer_ids = $request->answer_id;
             $number_of_items = count($item_ids);
             for ($i=0; $i < $number_of_items; $i++) { 
-                Answer::updateOrCreate(
+                Answer::updateOrInsert(
                     [
                         'item_id' => $item_ids[$i],
                     ],

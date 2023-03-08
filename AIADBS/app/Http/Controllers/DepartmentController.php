@@ -123,7 +123,7 @@ class DepartmentController extends Controller
         $department = explode('-',  $request->input('department'));
         
         $name = $department[0];
-        $abbreviation = $department[1];
+        $abbreviation = count($department) > 1 ? $department[1] : null ;
         
         $department_id = Department::insertGetId([
            'name' => $name,
@@ -138,7 +138,7 @@ class DepartmentController extends Controller
             foreach ($courses as $course){
                 $data = explode('-', $course);
                 $name = $data[0];
-                $abbreviation = $data[1];
+                $abbreviation = count($data) >1 ? $data[1] : null ;
                 DB::table('courses')->insert([
                     'name' => $name,
                     'abbreviation' => $abbreviation,

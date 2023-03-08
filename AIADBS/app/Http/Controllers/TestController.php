@@ -24,6 +24,8 @@ class TestController extends Controller
 
     //CUSTOM FUNCTION(S)
     
+   
+    
 
     /**
      * Display a listing of the resource.
@@ -34,8 +36,6 @@ class TestController extends Controller
     {
         //
         $user = Auth::user();
-        
-
         $test = Test::where('user_id',$user->id)->get();
         $uri = $request->route()->uri();
         
@@ -44,7 +44,11 @@ class TestController extends Controller
         return view('forms.test_index', ['tests' =>$test, 'uri' => $uri]);
         
     }
-
+    public function testIndex(){
+        $id = $request->test_id;
+        
+        return response()->json($id);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -112,6 +116,7 @@ class TestController extends Controller
         }
         return redirect('analysis/create/0')->withErrors(['success'=>'Test has been created successfully.']);
     }
+    
 
     /**
      * Display the specified resource.
@@ -119,9 +124,13 @@ class TestController extends Controller
      * @param  \App\Models\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function show(Test $test,$id)
+    public function show(Request $request,Test $test, $id)
     {
         //
+        if($request->ajax()){
+            $test = Test::find($id);
+            return response()->json($test);
+        }
         $test = $test->find($id);
         $sets = Set::select('id','set_name','num_of_items')->where('test_id', $id)->get();
         $setIds = $sets->pluck('id');
@@ -148,7 +157,7 @@ class TestController extends Controller
      * @param  \App\Models\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function edit(Test $test,Request $request, $id)
+    public function edit(Test $test, Request $request, $id)
     {
         //
         $test->where('id', $id)->update([
@@ -208,7 +217,7 @@ class TestController extends Controller
 
 
     //CUSTOM FUNCTIONS
-    private function parseIndexedString($string){
+    public function parseIndexedString($string){
         $lines = explode("\n", $string);
         $array = [];
         foreach ($lines as $line){

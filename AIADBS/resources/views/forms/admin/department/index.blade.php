@@ -36,14 +36,19 @@
                                     Action
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a href="#" class="dropdown-item">
+                                    {{-- <a href="#" class="dropdown-item">
                                         <i class="far fa-edit text-success"></i>
                                         Edit
+                                    </a> --}}
+                                    <a href="#" onclick="courseModal({{ $department->id }});" class="dropdown-item">
+                                        <i class="fas fa-scroll text-primary"></i>
+                                        Courses
                                     </a>
                                     <a href="#" onclick="subjectModal({{ $department->id }});" class="dropdown-item">
                                         <i class="fas fa-book text-primary"></i>
                                         Subjects
                                     </a>
+                                    
                                     <a onclick="trashIt('{{ $department->id }}');"  class="dropdown-item">
                                         <i class="far fa-trash-alt text-danger"></i>
                                         Trash
@@ -74,11 +79,11 @@
                     <form action="#" id="form-subject" onsubmit="event.preventDefault();">
                         <input type="hidden" name="department_id" >
                         <div class="contaiener row gy-3">
-                            <div class="col-4">
+                            <div id="add-div" class="col-4">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="subject" placeholder="Add Subject" id="subject-add">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-success" onclick="addSubject();">
+                                        <button class="btn btn-outline-success" id="add-btn">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
@@ -116,10 +121,11 @@
     
     
     <script>
-        function GET(url){
+        function GET(url,data){
             return $.ajax({
                 type: "GET",
                 url: url,
+                data:data,
                 dataType: "json",
                 success: function (response) {
                     return response;
@@ -143,12 +149,12 @@
 
         function getSubjects(id) {
              //GET list of subjects by department ID 
-             var subjects = GET(`/subject/show/${id}`);
+             var subjects = GET(`/subject/show/${id}`, {});
                 subjects.then(function(data){
                     console.log(data);
                     
                     $('#form-subject div.readonly').remove();
-
+                    
                     var subject= data.subjects;
                     $.each(subject, function (index, value) { 
                        console.log(value.name);
@@ -157,8 +163,7 @@
                                 <div class="input-group">
                                     <input type="text" readonly class="form-control" name="" value="${value.name}" id="">
                                     <div class="input-group-append">
-                                        
-                                        <button class="btn btn-outline-danger" onclick="trashIt(${value.id})">
+                                        <button class="btn btn-outline-danger" onclick="trashIt('subject',${value.id})">
                                             <i class="fas fa-minus"></i>
                                         </button>
                                     </div>
@@ -170,6 +175,54 @@
                 });
         }
 
+        function getCourses(id) {
+             //GET list of subjects by department ID 
+             var subjects = GET(`/courses/show/`, {department_id:id});
+                subjects.then(function(data){
+                    console.log(data);
+                    
+                    $('#form-subject div.readonly').remove();
+                    $.each(data, function (index, value) { 
+                       console.log(value.name);
+                        const div = `
+                            <div class="col-4 readonly">
+                                <div class="input-group">
+                                    <input type="text" readonly class="form-control" name="" value="${value.name}" id="">
+                                    <div class="input-group-append">
+                                        
+                                        <button class="btn btn-outline-danger" onclick="trashIt('courses',${value.id})">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                        $('#form-subject>div').append(div);
+                    });
+                });
+        }
+
+        function courseModal(id){
+            if(id != 0){
+
+                $('#form-subject input[name="department_id"]').val(id);
+
+                //GET department by ID
+                var department = GET('/department/show/'+id,{});
+                department.then(function(data){
+                    $('#subject-modal-title').html(data.name + ' - Courses' );
+                });
+                
+                $('#add-btn').attr('onclick', 'addCourse();');
+                $('#add-div').attr('class', 'col-8');
+                $('#subject-add').attr('placeholder', 'Add Course ex. Name of Course - ABBRV');
+                getCourses(id);
+            }
+            $('#subject-modal').modal('toggle');
+        }
+
+        
+
         function subjectModal(id) {
             
             if(id != 0){
@@ -177,11 +230,13 @@
                 $('#form-subject input[name="department_id"]').val(id);
 
                 //GET department by ID
-                var department = GET('/department/show/'+id);
+                var department = GET('/department/show/'+id,{});
                 department.then(function(data){
                     $('#subject-modal-title').html(data.name + ' - Subjects' );
                 });
-
+                $('#add-btn').attr('onclick', 'addSubject();');
+                $('#add-div').attr('class', 'col-5');
+                $('#subject-add').attr('placeholder', 'Add Subject');
                 getSubjects(id);
             }
             $('#subject-modal').modal('toggle');
@@ -196,13 +251,24 @@
            
         }
 
-
-        function trashIt(id){
-            POST('subject/destroy',{ id: id});
-            getSubjects($('#form-subject input[name="department_id"]').val());
+        function addCourse(){
+            var subject = $('#subject-add').val();
+            var data = $('#form-subject').serialize();
+            POST('/courses/store', data);
+            $('input[name="subject"]').val("");
+            getCourses($('#form-subject input[name="department_id"]').val());
         }
-        $(document).ready(function () {
+
+        function trashIt(trash,id){
+            POST(`/${trash}/destroy`,{id: id});
+            if (trash == "subject") {
+                getSubjects($('#form-subject input[name="department_id"]').val());
+            } else {
+                getCourses($('#form-subject input[name="department_id"]').val());
+            }
             
-        });
+        }
+
+        
     </script>
 @endsection

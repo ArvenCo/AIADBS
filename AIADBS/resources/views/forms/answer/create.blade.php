@@ -150,6 +150,7 @@
                 var itemCollection = response.items;
                 console.log(itemCollection);
                 var i = 1;
+                $('#item-container').empty();
                 $.each(itemCollection, function (index, value) { 
                     const item = value;
                     
@@ -161,7 +162,7 @@
                                 <div class="col-10">
                                     <input type="hidden"  name="item_id[]" id="item_id" value="${item.id}">
                                     <input type="hidden"  name="answer_id[]" id="item_id" value="${item.answer_id != null ? 1 : 0 }">
-                                    <input type="text" name="answer[]" id="answer${item.id}" class="form-control" value="${item.answer != null? item.answer : ""}">
+                                    <input type="text" required name="answer[]" id="answer${item.id}" class="form-control" value="${item.answer != null? item.answer : ""}">
                                 </div>
                             </div>
                         </li>

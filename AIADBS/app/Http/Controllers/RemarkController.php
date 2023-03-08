@@ -224,7 +224,7 @@ class RemarkController extends Controller
             
             
         }
-        //dd(['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests, 'itemRemark' => $itemRemark, 'itemsMisc' => $itemMisc]);
+        dd($setItems);
         $uri = $request->route()->uri();
         if($uri == "databank/show/{id}"){
           return view('forms.databank', ['sets'=>$sets, 'setItems' => $setItems, 'tests' => $tests]);
@@ -244,19 +244,17 @@ class RemarkController extends Controller
      * @param  \App\Models\Remark  $remark
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request,Remark $remark, $id)
+    public function edit(Request $request,Remark $remark)
     {
         //
-        # Show the form for editing the specified resource
-        // $sets = Set::rightjoin('items', 'sets.id','=', 'items.set_id')
-        // ->rightjoin('remarks', 'items.id', '=', 'remarks.item_id')
-        // ->where('test_id', '=', $id)
-        // ->select('sets.id','set_name',DB::raw('count(*) as total'))
-        // ->groupby('sets.id','set_name')
-        // ->get();
         
+        if ($request->ajax()) {
+          $set_id = $request->set_id;
+          $remarks = Remark::leftjoin('items', 'items.id','=', 'item_id')->where('set_id', $set_id)
+          ->select('remarks.id as id', 'item_id', 'ph', 'pl', 'pro_ph', 'pro_pl', 'desc_index', 'diff_index', 'final_rem')->get();
+          return response()->json($remarks);
+        }
 
-        dd();
     }
 
     /**
@@ -272,7 +270,7 @@ class RemarkController extends Controller
         $numS = $this->getSample($request->input('nums'));
         
         $items = Item::where('set_id' ,$request->input('selectedSet'))->get();
-
+        
         $ids = $request->input('id');
         $phs = $request->input('PH');
         $pls = $request->input('PL');

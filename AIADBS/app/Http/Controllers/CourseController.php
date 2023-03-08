@@ -12,9 +12,14 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        if ($request->ajax()) {
+            $department_id = $request->department_id;
+            $course = Course::where('department_id', $department_id)->get();
+            return response()->json($course,200);
+        }
     }
 
     /**
@@ -25,6 +30,7 @@ class CourseController extends Controller
     public function create()
     {
         //
+        
     }
 
     /**
@@ -36,7 +42,19 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         //
-       
+        try {
+            $course = new Course();
+            $course->department_id = $request->department_id;
+            $name = explode(" - ", $request->subject)[0];
+            $abbr = explode(" - ", $request->subject)[1];
+            $course->name = $name;
+            $course->abbreviation = $abbr;
+            $course->save();
+        
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json($th, 500);
+        }
         
     }
 
@@ -80,8 +98,10 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course $course)
+    public function destroy(Course $course,Request $request)
     {
         //
+        $course = $course->find($request->id);
+        $course->delete();
     }
 }

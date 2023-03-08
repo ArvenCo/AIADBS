@@ -94,7 +94,7 @@
                                         <i class="fas fa-chart-bar "></i>
                                         Item Analysis
                                       </a>
-                                      <a href="analysis/{{$test->id}}" class="dropdown-item"
+                                      <a href="analysis/edit/{{$test->id}}" class="dropdown-item"
                                       data-toggle="tooltip" data-placement="top" title="Edit Item Analysis">
                                         <i class="fas fa-edit "></i>
                                         Edit Analysis

@@ -47,9 +47,10 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form class="form-horizontal"  id="thisForm" action="\test\{{$test->id}}" method="POST" onsubmit="return checkForm(this);">
+              <form class="form-horizontal"  id="thisForm" action="/set/store" method="POST" onsubmit="return checkForm(this);">
                 @csrf
                 <div class="card-body">
+                  <input type="hidden" name="test_id" value="{{$test->id}}">
                   <div class="row">
                     <!-- form left side -->
                     <div class="col-8">
@@ -63,7 +64,6 @@
                       <div class="form-group row">
                         <label for="examination" class="col-sm-2 col-form-label">Examination</label>
                         <div class="col-sm-10">
-                          
                           <input disabled type="text" class="form-control" id="examination" name="examination" value="{{$test->examination}}">
                         </div>
                       </div>
