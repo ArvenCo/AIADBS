@@ -49,7 +49,14 @@ class CourseController extends Controller
             $abbr = explode(" - ", $request->subject)[1];
             $course->name = $name;
             $course->abbreviation = $abbr;
-            $course->save();
+            $save = $course->save();
+            if ($saved){
+                $data = ['success' => 'Course save Successfully!'];
+                return response()->json($data, 200);
+            }else{
+                $data = ['error' => 'Course save failed.'];
+                return response()->json($data, 500);
+            }
         
         } catch (\Throwable $th) {
             //throw $th;

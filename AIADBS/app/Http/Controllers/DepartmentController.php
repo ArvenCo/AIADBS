@@ -169,13 +169,12 @@ class DepartmentController extends Controller
      * @param  \App\Models\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function show(Department $department, $id)
+    public function show(Department $department, Request $request)
     {
         //
-
+        $id = $request->id;
         $department = $department->find($id);
         $courses = DB::table('courses')->where('department_id', '=',$department->id);
-        
         return response()->json($department);
         
     }
@@ -201,6 +200,18 @@ class DepartmentController extends Controller
     public function update(Request $request, Department $department)
     {
         //
+        $department = $department->find($request->id);
+        $department->name = $request->name;
+        $department->abbreviation = $request->abbreviation;
+        $saved = $department->save();
+        if ($saved){
+            $data = ['success' => 'Department update Successfully!'];
+            return response()->json($data, 200);
+        }else{
+            $data = ['error' => 'Department update failed.'];
+            return response()->json($data, 500);
+        }
+        
         
     }
 

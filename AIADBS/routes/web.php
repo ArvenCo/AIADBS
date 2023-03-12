@@ -83,6 +83,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('destroy',[CourseController::class,'destroy']);
     });
 
+    Route::prefix('department')->group(function () {
+        Route::post('show',[DepartmentController::class,'show']);
+        Route::post('update',[DepartmentController::class,'update']);
+    });
     Route::prefix('sets')->group(function () {
         Route::get('index',[SetController::class, 'index']);
     });
@@ -90,8 +94,6 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('remarks')->group(function () {
         Route::get('edit',[RemarkController::class, 'edit']);
     });
-
-    
 });
 Route::middleware('auth')->get('/print/show/{id}',[RemarkController::class,'show']);
 Route::middleware('auth')->get('/showData/{id}',[RemarkController::class,'showData'])->name('show.data');
@@ -101,7 +103,7 @@ Route::middleware('auth')->get('/databank/show/{id}',[RemarkController::class,'s
 Route::middleware('auth')->get('/educator/create', [EducatorController::class,'create'])->name('educator.create');
 
 Route::middleware('auth')->get('/department/create', [DepartmentController::class,'create'])->name('department.create');
-Route::middleware('auth')->get('/department/show/{id}', [DepartmentController::class,'show'])->name('department.show');
+Route::middleware('auth')->get('/department/show', [DepartmentController::class,'show'])->name('department.show');
 Route::middleware('auth')->get('/departments', [DepartmentController::class,'index'])->name('department.index');
 Route::middleware('auth')->post('/department', [DepartmentController::class, 'store'])->name('department.register');
 Route::middleware('auth')->get('/getfunction/{office}', [DepartmentController::class, 'getDepartmentsBy'])->name('department.getDepartment');

@@ -51,8 +51,12 @@ class SubjectController extends Controller
             $subject->name = $request->subject;
             $subject->department_id = $request->department_id;
             $save = $subject->save();
-            if ($save) {
-                return ['Subject saved successfully'];
+            if ($save){
+                $data = ['success' => 'Subject save Successfully!'];
+                return response()->json($data, 200);
+            }else{
+                $data = ['error' => 'Subject save failed.'];
+                return response()->json($data, 500);
             }
         } catch ( Exception $e) {
             return ['error' => $e->getMessage()];
@@ -92,6 +96,7 @@ class SubjectController extends Controller
     public function update(Request $request, Subject $subject)
     {
         //
+        
     }
 
     /**
@@ -104,6 +109,13 @@ class SubjectController extends Controller
     {
         //
         $subject = $subject->find($request->id);
-        $subject->delete();
+        $delete = $subject->delete();
+        if ($delete){
+            $data = ['success' => 'Subject deleted Successfully!'];
+            return response()->json($data, 200);
+        }else{
+            $data = ['error' => 'Subject delete failed.'];
+            return response()->json($data, 500);
+        }
     }
 }

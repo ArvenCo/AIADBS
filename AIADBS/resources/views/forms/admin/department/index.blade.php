@@ -49,9 +49,9 @@
                                         Subjects
                                     </a>
                                     
-                                    <a onclick="trashIt('{{ $department->id }}');"  class="dropdown-item">
-                                        <i class="far fa-trash-alt text-danger"></i>
-                                        Trash
+                                    <a href="#" onclick="getDepartment('{{ $department->id }}');"  class="dropdown-item" data-toggle="modal" data-target="#edit-department">
+                                        <i class="fas fa-edit text-success "></i>
+                                        Edit
                                     </a>
                                 </div>
                             </div>
@@ -66,6 +66,7 @@
 </div>
 
 <div id="modals">
+    {{-- Subject Modal(Start)--}}
     <div class="modal fade" id="subject-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -104,12 +105,49 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
                     <button type="button" class="btn btn-secondary" onclick="subjectModal('0')" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+    {{-- Subject Modal (End) --}}
+
+    {{-- Edit Department Modal (Start)--}}
+    <div class="modal fade" id="edit-department" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="edit-department-title">Edit Department</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body" id="department">
+                    <form id="update-department">
+                        <input type="hidden" name="id">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="abbreviation">Abbreviation</label>
+                            <input type="text" name="abbreviation" id="abbreviation" class="form-control w-50">
+                        </div>
+                    </form>
+                    
+                    
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="updateDepartment()">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Edit Department Modal (End)--}}
 </div>
 
 @endsection
@@ -117,9 +155,7 @@
 @section('script')
 
     @include('forms.modules.datatable.scripts')
-    
-    
-    
+
     <script>
         function GET(url,data){
             return $.ajax({
@@ -143,6 +179,14 @@
                 },
                 success: function (response) {
                     console.log(response);
+                    $.each(response, function (indexInArray, valueOfElement) { 
+                        if (indexInArray == "success") {
+                            toastr.success(valueOfElement)
+                        }
+                        if (indexInArray == "error") {
+                            toastr.error(valueOfElement)
+                        } 
+                    });
                 }
             });
         }
@@ -189,7 +233,6 @@
                                 <div class="input-group">
                                     <input type="text" readonly class="form-control" name="" value="${value.name}" id="">
                                     <div class="input-group-append">
-                                        
                                         <button class="btn btn-outline-danger" onclick="trashIt('courses',${value.id})">
                                             <i class="fas fa-minus"></i>
                                         </button>
@@ -208,7 +251,7 @@
                 $('#form-subject input[name="department_id"]').val(id);
 
                 //GET department by ID
-                var department = GET('/department/show/'+id,{});
+                var department = GET('/department/show',{id:id});
                 department.then(function(data){
                     $('#subject-modal-title').html(data.name + ' - Courses' );
                 });
@@ -220,8 +263,6 @@
             }
             $('#subject-modal').modal('toggle');
         }
-
-        
 
         function subjectModal(id) {
             
@@ -242,6 +283,23 @@
             $('#subject-modal').modal('toggle');
         }
         
+        
+        function getDepartment(id) {
+            var department  = GET('/department/show', {id:id});
+            department.then(function (response)  {
+                console.log(response);
+                var data = response;
+                $('#department input[name="id"]').val(data.id);
+                $('#department input[name="name"]').val(data.name);
+                $('#department input[name="abbreviation"]').val(data.abbreviation);
+            });
+        }
+
+        function updateDepartment() {
+            var udpate = POST('/department/update',$("#update-department").serialize());
+        }
+
+
         function addSubject(){
             var subject = $('#subject-add').val();
             var data = $('#form-subject').serialize();
