@@ -34,8 +34,17 @@
   <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
   
   @yield('head')
+  <style>
+    #intro{
+        background-color: #cccccc;
+        background-image: url("../../dist/img/logo/SMCCOP.png");
+        height: 100%;
+        background-size: cover;
+        
+    }
+</style>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" >
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -49,7 +58,7 @@
     @include('layouts.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="intro">
       @yield('header')
       @yield('content')
     </div>
@@ -110,14 +119,6 @@
 
 
 <!-- Page specific script -->
-
-
-
-  
-  
-
-  
-
 
 <script>
   $(function () {

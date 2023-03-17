@@ -18,8 +18,24 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
+    <style>
+        #intro{
+            background-color: #cccccc;
+            background-image: url("../../dist/img/logo/SMCCOP.png");
+            height: 100vh;
+            background-size: cover;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            
+        }
+    </style>
 </head>
-<body>
+<body id="intro">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -79,10 +95,9 @@
             </div>
         </nav>
 
-        <main class="d-flex align-items-stretch py-5">
+        <main  class="d-flex align-items-stretch py-5">
             
             @yield('content')
-            
             
         </main>
     </div>
