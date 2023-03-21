@@ -6,7 +6,7 @@ use App\Models\Test;
 use App\Models\Remark;
 use App\Models\Set;
 use App\Models\Item;
-
+use App\Models\Educator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -42,15 +42,15 @@ class RemarkController extends Controller
     {
         //
         $user = Auth::user();
-        $educator = DB::table('educators')->rightjoin('departments','departments.id','=','department_id')->where('user_id',$user->id)->get();
+        $educator = Educator::where('user_id', $user->id)->get();
+        $dep_ids = explode(', ',$educator->first()->department_ids);
+        $educator = Educator::where('user_id', $user->id)->get();
+        $departments = DB::table('departments')->whereIn('id', $dep_ids)->get();
 
         if ($id == '0'){
-          
           $id = Test::latest('id')->where('user_id', '=', $user->id)->first()->id;
-          
         }
-        
-        
+
         $tests = Test::find($id);
         $sets = Set::leftjoin('items','sets.id','=', 'items.set_id' )
         ->leftjoin('remarks', 'items.id', '=', 'remarks.item_id')
@@ -71,7 +71,7 @@ class RemarkController extends Controller
             $setArray[$setId] = $itemsArray;
         }
         
-        return view('forms.analysis.create', ['sets'=> $sets, 'setItems' => $setArray, 'tests' => $tests,'educator'=>$educator]);
+        return view('forms.analysis.create', ['sets'=> $sets, 'setItems' => $setArray, 'tests' => $tests,'educator'=>$educator, 'departments' => $departments]);
     }
 
     /**

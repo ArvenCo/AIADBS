@@ -108,7 +108,7 @@ Route::middleware('auth')->get('/departments', [DepartmentController::class,'ind
 Route::middleware('auth')->post('/department', [DepartmentController::class, 'store'])->name('department.register');
 Route::middleware('auth')->get('/getfunction/{office}', [DepartmentController::class, 'getDepartmentsBy'])->name('department.getDepartment');
 
-Route::middleware('auth')->get('/educators', [EducatorController::class, 'index'])->name('educator.index');
+Route::middleware('auth')->get('/register-user', [EducatorController::class, 'index'])->name('educator.index');
 Route::middleware('auth')->post('/educator', [MainController::class, 'register'])->name('educator.register');
 Route::middleware('auth')->post('/update-account/{id}', [MainController::class, 'update'])->name('account.update');
 

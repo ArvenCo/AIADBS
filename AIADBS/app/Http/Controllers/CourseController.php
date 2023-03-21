@@ -15,10 +15,10 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         //
-        if ($request->ajax()) {
+        if ($request->ajax()){
             $department_id = $request->department_id;
-            $course = Course::where('department_id', $department_id)->get();
-            return response()->json($course,200);
+            $course = Course::whereIn('department_id', $department_id)->get();
+            return response()->json($course, 200);
         }
     }
 
@@ -30,7 +30,7 @@ class CourseController extends Controller
     public function create()
     {
         //
-        
+
     }
 
     /**
@@ -50,19 +50,18 @@ class CourseController extends Controller
             $course->name = $name;
             $course->abbreviation = $abbr;
             $save = $course->save();
-            if ($saved){
+            if ($save) {
                 $data = ['success' => 'Course save Successfully!'];
                 return response()->json($data, 200);
-            }else{
+            } else {
                 $data = ['error' => 'Course save failed.'];
                 return response()->json($data, 500);
             }
-        
+
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json($th, 500);
         }
-        
     }
 
     /**
@@ -105,7 +104,7 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Course $course,Request $request)
+    public function destroy(Course $course, Request $request)
     {
         //
         $course = $course->find($request->id);

@@ -33,14 +33,12 @@ class MainController extends Controller
         $save = $user->save();
 
         $userId = $user->id;
-        
-        Educator::insert([
-            'user_id'=> $userId,
-            'department_id' => $request->department,
-            'subjects' => join(', ', request('subjects')),
-            'education_office' => $request->education_office,
-        ]);
-
+        $educator = New Educator();
+        $educator->user_id = $userId;
+        $educator->department_ids = join(', ', $request->department);
+        $educator->subjects = join(', ', $request->subjects);
+        $educator->education_office = $request->education_office;
+        $educator->save();
 
         if($save){
             return back()->withErrors(['success'=>'User registration success.']);

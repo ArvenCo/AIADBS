@@ -20,12 +20,12 @@
                             <label for="education-form" >Education Office</label>
                             <div class="form-group" id="education-form">
                                 <div class="form-check form-check-inline" >
-                                    <input type="radio" name="education_office" value="DepEd" class="form-inline-check" id="DepEdRadio" required>
-                                    <label for="DepEdRadio" class="form-check-label">DepEd</label>
+                                    <input type="radio" name="education_office" value="BasicEd" class="form-inline-check" id="DepEdRadio" required>
+                                    <label for="DepEdRadio" class="form-check-label">BasicEd</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" name="education_office" value="CHED" class="form-inline-check" id="CHEDRadio">
-                                    <label for="CHEDRadio" class="form-check-label">CHED</label>
+                                    <input type="radio" name="education_office" value="College" class="form-inline-check" id="CHEDRadio">
+                                    <label for="CHEDRadio" class="form-check-label">College</label>
                                 </div>
                             </div>
                         </div>

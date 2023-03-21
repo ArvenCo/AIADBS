@@ -16,7 +16,7 @@ class CreateEducatorsTable extends Migration
         Schema::create('educators', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('department_id')->constrained('departments');
+            $table->string('department_ids');
             $table->string('education_office');
             $table->string('subjects',10000);
             $table->timestamps();
@@ -47,20 +47,20 @@ class CreateEducatorsTable extends Migration
                     'BSCS: Bachelor of Science in Computer Science',
                     'BLIS: Bachelor of Library and Information Science'
                 ),
-                'education_office' => 'CHED'
+                'education_office' => 'College'
             ),
             'CAS: College of Arts and Sciences' => array(
                 'courses' => array(
                     'AB English: Bachelor of Arts major in English Language'
                 ),
-                'education_office' => 'CHED'
+                'education_office' => 'College'
             ),
             'CCJE: College of Criminal Justice Education' => array(
                 'courses' => array(
                     'Bachelor of Science in Industrial Security Management',
                     'BSCrim: Bachelor of Science in Criminology'
                 ),
-                'education_office' => 'CHED'
+                'education_office' => 'College'
             ),
             'CTE: College of Teacher Education' => array(
                 'courses' => array(
@@ -72,7 +72,7 @@ class CreateEducatorsTable extends Migration
                     'BTVTE: Bachelor of Technical Vocational Teacher Education',
                     'Bachelor of Early Childhood Education'
                 ),
-                'education_office' => 'CHED'
+                'education_office' => 'College'
             ),
             'CTHBAM: College of Tourism, Hospitality, Business and Management' => array(
                 'courses' => array(
@@ -84,7 +84,7 @@ class CreateEducatorsTable extends Migration
                     'BSE: Bachelor of Science in Entrepreneurship',
                     'BSTM: Bachelor of Science in Tourism Management'
                 ),
-                'education_office' => 'CHED'
+                'education_office' => 'College'
             ),
             'TED: Technical Education Department' => array(
                 'courses' => array(
@@ -95,7 +95,7 @@ class CreateEducatorsTable extends Migration
                     'Food and Beverage Services NC II',
                     'Housekeeping NC II'
                 ),
-                'education_office' => 'CHED'
+                'education_office' => 'College'
             )
         );
         

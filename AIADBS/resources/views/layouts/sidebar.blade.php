@@ -28,29 +28,29 @@
         <!-- Add icons to the links using the .nav-icon class
             with font-awesome or any other icon font library -->
             @php
-            $uri = Request::route()->uri();
+              $uri = Request::route()->uri();
             @endphp
         
         @if(Auth::user()->role == 'admin')
-        <li class="nav-item">
-          <a href="/departments"  class="nav-link ">
-            <i class="nav-icon fas fa-school"></i>
-            <p>
-              Department
-              {{-- <i class="right fas fa-angle-left"></i> --}}
-            </p>
-          </a>
-        </li>
-        <li class="nav-item ">
-          <a href="/educators" class="nav-link ">
-            <i class="nav-icon fas fa-user-graduate"></i>
-            <p>
-              Educator
-              {{-- <i class="right fas fa-angle-left"></i> --}}
-            </p>
-          </a>
-        </li>
-        
+          <li class="nav-item">
+            <a href="/departments"  class="nav-link ">
+              <i class="nav-icon fas fa-school"></i>
+              <p>
+                Department
+                {{-- <i class="right fas fa-angle-left"></i> --}}
+              </p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a href="/register-user" class="nav-link ">
+              <i class="nav-icon fas fa-chalkboard-teacher    "></i>
+              <p>
+                Register
+                {{-- <i class="right fas fa-angle-left"></i> --}}
+              </p>
+            </a>
+          </li>
+          
         @else
         <li class="nav-item">
             <a href="{{ ($uri =='test') ? '' : '/test' }}" class="nav-link {{ ($uri == 'test')||($uri == 'test/create')||($uri == 'test/{id}')||($uri == 'test/show/{id}')  ? 'active' : '' }}">
@@ -72,7 +72,7 @@
             <a href="/databank" class="nav-link {{ (request()->is('databank')) ? 'active' : '' }}">
               <i class="fas fa-database"></i>
                 <p>
-                    Data Bank
+                    Test Bank
                 </p>
             </a>
         </li>

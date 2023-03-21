@@ -141,9 +141,9 @@
 
       if('{{$errors->has('error')}}'){
         Toast.fire({
-        icon: 'error',
-        title: 'Error! \n {{$errors->any()? $errors->first('error') : ''}}'
-      });
+          icon: 'error',
+          title: 'Error! \n {{$errors->any()? $errors->first('error') : ''}}'
+        });
       }
     });
 </script>

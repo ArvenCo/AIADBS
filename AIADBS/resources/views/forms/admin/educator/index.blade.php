@@ -121,18 +121,27 @@
                                 <label for="education-form" >Education Office</label>
                                 <div class="form-group" id="education-form">
                                     <div class="form-check form-check-inline" >
-                                        <input type="radio" name="education_office" value="DepEd" class="form-inline-check" id="DepEdRadio" required>
-                                        <label for="DepEdRadio" class="form-check-label">DepEd</label>
+                                        <input type="radio" name="education_office" value="Basic Ed" class="form-inline-check" id="DepEdRadio" required>
+                                        <label for="DepEdRadio" class="form-check-label">Basic Ed</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" name="education_office" value="CHED" class="form-inline-check" id="CHEDRadio">
-                                        <label for="CHEDRadio" class="form-check-label">CHED</label>
+                                        <input type="radio" name="education_office" value="College" class="form-inline-check" id="CHEDRadio">
+                                        <label for="CHEDRadio" class="form-check-label">College</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="department">Department</label>
-                                    <select name="department" id="department" class="form-select overflowx-auto" style="width:100% !important;">
-                                        
+                                    
+                                        <div id="dropdown-container" class="dropdown w-100 mega-dropdown">
+                                            <button class="btn dropdown-toggle w-100" type="button" id="department_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Select Options
+                                            </button>
+                                            <div id="dept-container" class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                                                <div class="dropdown-item checkbox">
+                                                    <input type="checkbox" id="department[]" name="option1" value="option1">
+                                                    <label for="department[]" class="form-check-label">Option 1</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!-- Ajax Content Generated HERE -->
                                     </select>
                                 </div>
@@ -199,8 +208,23 @@
 </script>
 
 <script>
-
     
+    function GET(url,data){
+        return $.ajax({
+            type: "GET",
+            url: url,
+            data: data,
+            dataType: "json",
+            success: function (response) {
+                return response;
+            }
+        });
+    }
+    
+    $('.dropdown-menu').on("click.bs.dropdown", function (e) {
+        e.stopPropagation();                            
+    });
+
     function updateModal(id){
        
         if (id != 0) {
@@ -218,9 +242,7 @@
                 }
             });
         }
-        
         $('#updateModal').modal('toggle');
-        
     }
 
     function retrieveAccount(id) {
@@ -267,43 +289,70 @@
                 success: function (data){
                     
                     
-                    $('#department').html(`
-                        <option selected disabled>${office}</option>
-                    `);
+                    $('#dept-container').empty();
                     $.each(data['departments'], function(key, value){
-                        
-                        $('#department').append(`
-                            <option value="${value.id}" id="selected-department">${value.name}</option>
+
+                        $('#dept-container').append(`
+                            <div class="dropdown-item checkbox">
+                                <input type="checkbox" id="department${value.id}" name="department[]" value="${value.id}">
+                                <label for="department${value.id}" class="form-check-label">${value.name}</label>
+                            </div>
                         `);
                     });
-                    
-                    $('#department').on('change' ,[subjects = data['department_array']], function(){
+                    let ids=[];
+                    $("#dept-container input:checkbox").on('click',[subjects = data['department_array']],function (e) { 
+                        ids= [];
+                        $('input:checkbox:checked').each (function () { 
+                            ids.push($(this).val());
+                        });
+                        console.log(ids);
+                        $('#subject-list').empty();
+                        let courses;
+                        courses = GET('/courses/show',{department_id:ids});
                         
-                        
-                        $('option:selected').each(function(){
+                        courses.then(function(data) {
+                            console.log(data);
+                            let courseshtml = ``;
                             
-                            $('#subject-list').empty();
-                            var index = 1;
-                            $.each(subjects[$(this).val()]['course'], function(key, value){
-                                var showValue = value['abbreviation'] != null? value['abbreviation'] :  value['name'];
+                            for (let j = 0; j < data.length; j++) {
+                                const value = data[j];
+                                let object = value.abbreviation != null ? value.abbreviation : value.name;
                                 $('#subject-list').append(`
                                     <div class="list-group-item border-0 border-bottom">
                                         <div class="form-check">
-                                            <input type="checkbox" name="subjects[]" class="form-check-input" value="${showValue}" id="${showValue}">
-                                            <label for="${showValue}" class="form-check-label ">${showValue}</label>
+                                            <input type="checkbox" name="subjects[]" class="form-check-input" value="${object}" id="${object}">
+                                            <label for="${object}" class="form-check-label ">${object}</label>
                                         </div>
                                     </div>
-                                `);
+                                    `);
                                 
-                                index += 1;
-
-                            });
-
-                            
+                            }
                             
                         });
-
+                        
                     });
+                    
+                    // if(ids.length>0){
+                    //     $('#department').on('click' ,[subjects = data['department_array']], function(){
+                        
+                    //         $('option:selected').each(function(){
+                    //             $('#subject-list').empty();
+                    //             var index = 1;
+                    //             $.each(subjects[$(this).val()]['course'], function(key, value){
+                    //                 var showValue = value['abbreviation'] != null? value['abbreviation'] :  value['name'];
+                    //                 $('#subject-list').append(`
+                    //                     <div class="list-group-item border-0 border-bottom">
+                    //                         <div class="form-check">
+                    //                             <input type="checkbox" name="subjects[]" class="form-check-input" value="${showValue}" id="${showValue}">
+                    //                             <label for="${showValue}" class="form-check-label ">${showValue}</label>
+                    //                         </div>
+                    //                     </div>
+                    //                 `);
+                    //                 index += 1;
+                    //             });
+                    //         });
+                    //     });
+                    // }
                     
                 },
                 error: function(data){

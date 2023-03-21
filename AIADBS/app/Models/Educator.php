@@ -14,12 +14,12 @@ class Educator extends Model
     //     'subjects' => 'array',
     // ];
 
-    protected function subjects(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
-            set: fn ($value) => json_encode($value),
-        );
-    } 
+    // protected function subjects(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn ($value) => json_decode($value, true),
+    //         set: fn ($value) => json_encode($value),
+    //     );
+    // } 
 
 }
