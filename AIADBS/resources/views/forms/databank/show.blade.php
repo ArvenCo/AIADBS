@@ -93,6 +93,7 @@
                 url: "/search/subject/"+subject,
                 dataType: "json",
                 success: function (data) {
+                    console.log(data);
                     returnValue(data);
                 }
             });
@@ -115,7 +116,7 @@
                     
                 }
                 $.each(data.items, function (index, value) { 
-                    $('#item-container').append(i + ". " + value.item_string);
+                    $('#item-container').append(i + ". " + value.item_string + "\n");
                     i+=1;
                 });
                 $('#item-container').append('\n\n\nAnswers:\n');

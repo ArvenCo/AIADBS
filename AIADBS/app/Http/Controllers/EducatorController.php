@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Educator;
+use App\Models\User;
+
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\Exceptions\Handler;
 
@@ -27,6 +31,23 @@ class EducatorController extends Controller
         $departmentId = DB::table('educators')->where('user_id', '=', $id)->get();
         return ['educator' => $departmentId];
     }
+
+    public function retrieveIt($id){
+
+        try {
+            $user = User::find($id);
+            $user->password = Hash::make('iameducator');
+            $saved = $user->save();
+            if($saved){
+                return response()->json(['success' => 'Account retrieved successfuly.'], 200);
+            }else{
+                return response()->json(['error' => 'Account retrieve failed.'], 500);
+            }
+        } catch (Exception $th) {
+            //throw $th;
+            return response()->json(['error' => $th], 500);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -39,7 +60,7 @@ class EducatorController extends Controller
             abort(403);
         }else{
             return view('forms.admin.educator.create',app('App\Http\Controllers\DepartmentController')->getDepartments());
-        }
+        }   
     }
 
     /**
@@ -53,24 +74,25 @@ class EducatorController extends Controller
         //
     }
 
+    
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Educator  $educator
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
         //
-        try {
-            //code...
-            $user = DB::table('users')->rightjoin('educators', 'educators.user_id', '=', 'users.id')
-            ->where('users.id', '=', $id)->select('users.id as id','name', 'email', 'subjects')->first();
-            return ['user' => $user];
-        } catch (Exception $e) {
-            return ['error' => $e->getMessage()];
+        try{
+            $educator = Educator::leftjoin('users', 'user_id', '=', 'users.id')
+            ->where('user_id', '=', $request->id)
+            ->select('educators.id as id', 'email', 'name', 'subjects', 'education_office')->first();
+            return response()->json($educator, 200);
+        }catch(Exception $ex){
+            return response()->json($ex, 500);
         }
-        
     }
 
     /**
@@ -79,7 +101,7 @@ class EducatorController extends Controller
      * @param  \App\Models\Educator  $educator
      * @return \Illuminate\Http\Response
      */
-    public function edit(Educator $educator)
+    public function edit(Educator $educator, )
     {
         //
     }

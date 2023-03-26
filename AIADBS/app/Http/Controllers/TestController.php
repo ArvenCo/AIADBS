@@ -104,16 +104,17 @@ class TestController extends Controller
         //$SetId = DB::table('sets')->lastInsertId();
         $index = 1;
         foreach ($items as $item_string) {
+            $exploded = explode("Answer:", $item_string);
             $item = DB::table('items')->insertGetId([
                 'item_number' => $index,
-                'item_string' => $item_string,
+                'item_string' => $exploded[0],
                 'set_id' => $setId,
                 'created_at' => now()
             ]);
 
             $answer = new Answer();
             $answer->item_id = $item;
-            $exploded = explode("Answer:", $item_string);
+            
             $answer->answer = count($exploded) != null ? $exploded[1] : null;
             $answer->save();
             $index++;

@@ -87,6 +87,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('show',[DepartmentController::class,'show']);
         Route::post('update',[DepartmentController::class,'update']);
     });
+
+    Route::prefix('educator')->group(function(){
+        Route::post('retrieve/{id}',[EducatorController::class, 'retrieveIt']);
+        Route::get('edit',[EducatorController::class, 'show']);
+    });
+    
     Route::prefix('sets')->group(function () {
         Route::get('index',[SetController::class, 'index']);
     });
@@ -140,7 +146,6 @@ Route::middleware('auth')->get('/account',function(){})->name('update-account');
 
 
 Route::middleware('auth')->post('/trashed',[TrashController::class, 'store']);
-Route::middleware('auth')->get('/user/show/{id}', [EducatorController::class, 'show']);
 Auth::routes([
    
 ]); 
