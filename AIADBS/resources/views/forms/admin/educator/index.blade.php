@@ -40,10 +40,10 @@
                                     Action
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <!-- <a href="#" onclick="updateModal('{{ $educator->id }}');" class="dropdown-item">
+                                    <a href="#" onclick="updateModal('{{ $educator->id }}');" class="dropdown-item">
                                         <i class="fas fa-user-edit text-primary"></i>
                                         Edit
-                                    </a> -->
+                                    </a>
                                     <a  href="#" onclick="retrieve('{{ $educator->id }}');"  class="dropdown-item">
                                         <i class="fas fa-user-cog text-success"></i>
                                         Retrieve
@@ -184,7 +184,8 @@
                     <h5>Name: <span id="span-name-edit" >First Last</span></h5>
                     <h6>Username: <span id="span-uname-edit">username123</span></h6>
                     <hr>
-                    <form action="" id="instructor-edit">
+                    <form action="" id="educator-edit">
+                        <input type="hidden" name="id">
                         <div id="edit-educator" class="w-100">
                             <label for="education-form" >Education Office</label>
                             <div class="form-group" id="education-form">
@@ -200,7 +201,7 @@
                             <div class="form-group">
                                 
                                     <div id="dropdown-container" class="dropdown w-100 mega-dropdown">
-                                        <button class="btn dropdown-toggle w-100" type="button" id="department_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn dropdown-toggle w-100" type="button" id="department-dropdown-edit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Select Options
                                         </button>
                                         <div id="dept-container-edit" class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
@@ -215,7 +216,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Assigned Courses</label>
-                                <div id="subject-list-edit" class="list-group border-0 mh-50 overflow-auto" style="max-height: 31vh !important;">
+                                <div id="subject-list-edit" class="list-group border-0 mh-50 overflow-auto" style="max-height: 26vh !important;">
                                     
                                 </div>
                             </div>
@@ -225,7 +226,7 @@
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="save-changes">Save changes</button>
                     <button type="button" class="btn btn-secondary" onclick="updateModal('0')" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -277,6 +278,19 @@
             }
         });
     }
+    
+    $('#save-changes').click(function (e) { 
+        e.preventDefault();
+        const post = POST('/educator/update',$('#educator-edit').serialize());
+        post.then(function (response) {
+            $.each(response, function (key, value) { 
+            Toast.fire({
+                icon: key,
+                title: value
+            });
+        });
+        });
+    });
 
     function load_courses(id){
         const office = $(`#${id}`).val();
@@ -307,13 +321,13 @@
                         $('input:checkbox:checked').each (function () { 
                             ids.push($(this).val());
                         });
-                        console.log(ids);
+                        // console.log(ids);
                         $('#subject-list-edit').empty();
                         let courses;
                         courses = GET('/courses/show',{department_id:ids});
                         
                         courses.then(function(data) {
-                            console.log(data);
+                            
                             let courseshtml = ``;
                             
                             for (let j = 0; j < data.length; j++) {
@@ -322,7 +336,7 @@
                                 $('#subject-list-edit').append(`
                                     <div class="list-group-item border-0 border-bottom">
                                         <div class="form-check">
-                                            <input type="checkbox" name="subjects[]" class="form-check-input" value="${object}" id="${object}">
+                                            <input type="checkbox" name="courses[]" class="form-check-input" value="${object}" id="${object}">
                                             <label for="${object}" class="form-check-label ">${object}</label>
                                         </div>
                                     </div>
@@ -361,13 +375,13 @@
                         $('input:checkbox:checked').each (function () { 
                             ids.push($(this).val());
                         });
-                        console.log(ids);
+                        // console.log(ids);
                         $('#subject-list').empty();
                         let courses;
                         courses = GET('/courses/show',{department_id:ids});
                         
                         courses.then(function(data) {
-                            console.log(data);
+                            
                             let courseshtml = ``;
                             
                             for (let j = 0; j < data.length; j++) {
@@ -376,11 +390,11 @@
                                 $('#subject-list').append(`
                                     <div class="list-group-item border-0 border-bottom">
                                         <div class="form-check">
-                                            <input type="checkbox" name="subjects[]" class="form-check-input" value="${object}" id="${object}">
+                                            <input type="checkbox" name="courses[]" class="form-check-input" value="${object}" id="${object}">
                                             <label for="${object}" class="form-check-label ">${object}</label>
                                         </div>
                                     </div>
-                                    `);
+                                `);
                                 
                             }
                             
@@ -400,27 +414,78 @@
         e.stopPropagation();                                
     });
 
+    function check_course(ids, courses){
+        const id = ids.split(", ");
+        
+        let check = $('#dept-container-edit input:checkbox');
+        for (let i = 0; i < check.length; i++) {
+            const element = check[i];
+            if(id.includes(element.value)) {
+                element.checked = true;
+            }
+        }
+        
+        let course = GET('/courses/show',{department_id:id});
+        course.then(function(data){
+            
+            $('#subject-list-edit').empty();
+            for (let j = 0; j < data.length; j++) {
+                const value = data[j];
+                let object = value.abbreviation != null ? value.abbreviation : value.name;
+                $('#subject-list-edit').append(`
+                    <div class="list-group-item border-0 border-bottom">
+                        <div class="form-check">
+                            <input type="checkbox" name="courses[]" class="form-check-input" value="${object}" id="${object}">
+                            <label for="${object}" class="form-check-label ">${object}</label>
+                        </div>
+                    </div>
+                `);
+                
+            }
+        });
+        setTimeout(() => {
+            let course = courses.split(', ');
+            let checkCourse = $('#subject-list-edit input:checkbox');
+            for (let i = 0; i < checkCourse.length; i++) {
+                const element = checkCourse[i];
+                if(course.includes(element.value)) {
+                    element.checked = true;
+                }
+            }
+        }, 500);
+    }
+
+
+
+    
+    
     function updateModal(id){
         $("#update-title").html('Update Instructor' + id);
         $('#dept-container').empty();
         $('#dept-container-edit').empty();
         $('#subject-list').empty();
         $('#subject-list-edit').empty();
-       
+        
         const user = GET('/educator/edit',{id:id});
         user.then(function(data){
-            console.log(data.name);
-
+            $('#educator-edit input[name="id"]').val(data.id);
             $('#span-name-edit').html(data.name);
             $('#span-uname-edit').html(data.email);
-            
+            $('input[type="radio"]').prop('checked', false);
             if(data.education_office == 'College'){
-                $('#CHEDRadio1').attr('checked', 'checked');
+                
+                $('#CHEDRadio1').prop('checked', true);
                 load_courses('CHEDRadio1');
+                
             }else{
-                $('#DepEdRadio1').attr('checked', 'checked');
+                $('#DepEdRadio1').prop('checked', true);
                 load_courses('DepEdRadio1');
+                
             }
+            setTimeout(() => {
+                check_course(data.department_ids, data.courses)
+            }, 500);
+            
         });
         $('#updateModal').modal('toggle');
 
@@ -459,11 +524,8 @@
 
         $('input[type="radio"]').on('change', function(){
             var office = $('input[name="education_office"]:checked').val();
-            
-            console.log(this.id);
-            
+            // console.log(this.id);
             load_courses(this.id);
-                 
         });
     });
 </script>

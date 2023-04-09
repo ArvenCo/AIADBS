@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Educator;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
@@ -36,7 +38,7 @@ class MainController extends Controller
         $educator = New Educator();
         $educator->user_id = $userId;
         $educator->department_ids = join(', ', $request->department);
-        $educator->subjects = join(', ', $request->subjects);
+        $educator->courses = join(', ', $request->courses);
         $educator->education_office = $request->education_office;
         $educator->save();
 
@@ -82,4 +84,21 @@ class MainController extends Controller
             return ['error' => $e->getMessage()];
         }
     }
+
+
+    public function saveSubjects(Request $request){
+
+        
+        $user_id = Auth::id();
+        $educator = Educator::where('user_id', '=', $user_id)->first();
+        $educator->subjects = join(', ', $request->subjects);
+        $saved = $educator->save();
+        
+        if ($saved){
+            return response()->json(['success' => 'Subjects saved successfully'], 200);
+        }
+    }
+
+    
+
 }

@@ -13,7 +13,6 @@
 </style>
 @endsection
 
-
 @section('header')
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -56,10 +55,15 @@
                     <div class="col-8">
                       <div class="form-group row">
                         <label for="subject" class="col-sm-2 col-form-label">Subject</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                           
-                          <input type="text" required name="subject" class="form-control" id="subject">
+                          <select name="subject" id="subject" required class="form-control">
+                            
+                          </select>
 
+                        </div>
+                        <div class="col-sm-2">
+                          <a href="#" class="btn btn-outline-secondary float-start" data-toggle="modal" data-target="#subjects-modal"><i class="fa fa-book" aria-hidden="true"></i></a>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -68,9 +72,9 @@
                           
                           <select name="examination" id="examination" class="form-control">
                               <option value="Finals" >Final</option>
-                              <option value="Finals" >Pre-final</option>
-                              <option value="Finals" >Midterm</option>
-                              <option value="Finals" >Prelim</option>
+                              <option value="Pre-final" >Pre-final</option>
+                              <option value="Midterm" >Midterm</option>
+                              <option value="Prelim" >Prelim</option>
                           </select>
                         </div>
                       </div>
@@ -98,7 +102,6 @@
                       <div class="form-group row">
                         <label for="dateGiven" class="col-sm-4 col-form-label">Date Given</label>
                         <div class="col-sm-8">
-                          
                           <input required type="date" class="form-control" name="dateGiven" id="dateGiven">
                         </div>
                       </div>
@@ -132,6 +135,39 @@
       </div>
     </section>
     <!-- /.content -->
+    <!-- .modal -->
+    <div class="modal fade" id="subjects-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="user-subjects">
+              
+              <div class="row">
+                
+                
+
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="save-subjects" type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- /.modal -->
+    
+
+    <input type="hidden" name="user_id" id="user_id" value="{{Auth::id()}}">
+    
 @endsection
 
 
@@ -144,10 +180,120 @@
   
   @php 
   $options = $subjects;
-  
+  $user_id = Auth::id();
   @endphp
 
   <script>
+    function GET(url,data){
+      return $.ajax({
+        type: "GET",
+        url: url,
+        data: data,
+        dataType: "json",
+        success: function (response) {
+          return response
+        }
+      });
+    }
+
+    function POST(url,data){
+      return $.ajax({
+        type: "post",
+        url: url,
+        data: data,
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+          return response;
+        }
+      });
+    }
+
+    function saveUserSubjects(){
+      
+    }
+    $(document).ready(function () {
+      
+
+
+
+      $('#save-subjects').click(function (e) {
+        
+        const subjects = POST('/user/subjects/save', $('#user-subjects').serialize());
+        subjects.then(function (data) {
+          alert(data)
+        })
+
+        
+
+        e.preventDefault();
+      });
+      
+      const user = GET('/educator/show',{id : $('#user_id').val()});
+      user.then(function(data){
+        
+
+
+
+        const department_ids = data['department_ids'].split(', ');
+
+        const courses = GET('/courses/show',{department_id: department_ids});
+        courses.then(function (data){
+        });
+        const subjects = GET('/subjects/show',{department_id: department_ids});
+        subjects.then(function (data){
+          console.log(data);
+          $('#user-subjects').empty();
+          let html = ``;
+          $.each(data, function (index, value){ 
+              html += 
+                `<div class="col-auto flex-shrink-1">
+                  <div class="form-check">
+                    <input type="checkbox" class=""  name="subjects[]" id="${value.id}" value="${value.name}">
+                    <label class="form-check-label" for="${value.id}">${value.name}</label>
+                  </div>
+                </div>`;
+             
+          });
+          $('#user-subjects').html(html);
+
+          const userSubjects = GET('/educator/show',{id : $('#user_id').val()});
+          userSubjects.then(function (data) {
+            $('select#subject').empty();
+            $('select#subject').html('<option value="" hidden selected>Choose a Subject</option>');
+            $.each(data.subjects.split(', '), function (index, value) { 
+              $('select#subject').append(`
+                <option value=${value}>${value}</option>
+              `);
+
+              $("input[name='subjects[]']").each(function (index, element) {
+                // element == this
+                console.log(value);
+                if (element.value == value) {
+                  element.checked = true;
+                }
+              });
+              
+            });
+
+          });
+          
+        });
+        
+        
+
+        
+      });
+
+      
+
+      
+    });
+
+
+
     var items = @JSON($subjects);
     const array = [];
     $.each(items, function (index, item) { 

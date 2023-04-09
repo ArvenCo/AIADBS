@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -224,5 +225,12 @@ class DepartmentController extends Controller
     public function destroy(Department $department)
     {
         //
+    }
+
+    public function byCourse(Request $request){
+        $courses = $request->courses;
+        $ids = Course::whereIn('name', $courses)->select('department_id')->get();
+        $departments = Department::whereIn('id', $ids)->get();
+        return response()->json($departments, 200, $headers);
     }
 }

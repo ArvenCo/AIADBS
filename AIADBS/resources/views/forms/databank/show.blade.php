@@ -14,7 +14,10 @@
         <div class="card">
             <div class="card-header">
                 <div class="input-group w-25 me-3 float-end">
-                    <input type="text" class="form-control" name="search" id="search">
+                    <!-- <input type="text" class="form-control" name="search" id="search"> -->
+                    <select name="search" id="search" class="form-control"> 
+                        
+                    </select>
                     <span class="input-group-text">
                         <i class="fas fa-search"></i>
                     </span>
@@ -47,7 +50,21 @@
 @endsection
 
 @section('script')
+    <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
     <script>
+        function GET(url,data){
+            return $.ajax({
+                type: "get",
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function (response) {
+                    return response;
+                }
+            });
+        }
+
+        
         function autosuggest() {
             var department;
             $.ajax({
@@ -100,7 +117,21 @@
         }
 
         $(document).ready(function () {
-            autosuggest();
+            // autosuggest();
+            
+            const userData = GET('/educator/show',{id:$('#user_id').val()});
+            userData.then(function (data){
+                $('#search').empty();
+                $('#search').html('<option hidden>Search</option>');
+                $.each(data.subjects.split(', '), function (index, value) { 
+                    $('#search').append(`<option value="${value}">${value}</option>`);
+                });
+            });
+
+            $('#search').change(function (e) { 
+                console.log(this.value);
+                e.preventDefault();
+            });
             
             
         });
@@ -111,12 +142,12 @@
             searchItemBy(this.value, function (data){
                 console.log(data);
                 var i =1;
-                if (data.length < 1) {
+            if (data.length < 1) {
                     $('#item-container').text('No results found');
                     
                 }
                 $.each(data.items, function (index, value) { 
-                    $('#item-container').append(i + ". " + value.item_string + "\n");
+                    $('#item-container').append("\n"+ i + ". " + value.item_string + "\n");
                     i+=1;
                 });
                 $('#item-container').append('\n\n\nAnswers:\n');

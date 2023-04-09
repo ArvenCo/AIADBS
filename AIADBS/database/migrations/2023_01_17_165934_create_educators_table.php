@@ -18,7 +18,8 @@ class CreateEducatorsTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('department_ids');
             $table->string('education_office');
-            $table->string('subjects',10000);
+            $table->string('courses',1000);
+            $table->string('subjects',9999)->nullable();
             $table->timestamps();
         });
 

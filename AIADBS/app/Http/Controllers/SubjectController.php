@@ -21,7 +21,6 @@ class SubjectController extends Controller
     }
     
     public function subjectsBy($department){
-        
         $subjects = Subject::where('department_id','=' ,$department)->get();
         return ['subjects' => $subjects];
     }
@@ -70,9 +69,11 @@ class SubjectController extends Controller
      * @param  \App\Models\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function show(Subject $subject)
+    public function show(Subject $subject, Request $request)
     {
         //
+        $subjects = $subject->whereIn('department_id', $request->department_id)->get();
+        return response()->json($subjects, 200);
     }
 
     /**

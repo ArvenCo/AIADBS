@@ -68,8 +68,7 @@ Route::middleware('auth')->post('/analysis', [RemarkController::class , 'store']
 Route::middleware('auth')->get('/analysis/create/{id}',[RemarkController::class,'create']);
 Route::middleware('auth')->post('/analysis/update',[RemarkController::class,'update']);
 
-// Route::middleware('auth')->get('/analysis/{id}', [RemarkController::class , 'show']);
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function(){
 
     Route::prefix('analysis')->group(function () {
         Route::get('edit/{id}', function($id){
@@ -78,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('courses')->group(function () {
+
+       
         Route::get('show',[CourseController::class,'index']);
         Route::post('store',[CourseController::class,'store']);
         Route::post('destroy',[CourseController::class,'destroy']);
@@ -86,15 +87,28 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('department')->group(function () {
         Route::post('show',[DepartmentController::class,'show']);
         Route::post('update',[DepartmentController::class,'update']);
+
+         Route::get('show/course',[DepartmentController::class,'byCourse']);
     });
 
     Route::prefix('educator')->group(function(){
         Route::post('retrieve/{id}',[EducatorController::class, 'retrieveIt']);
         Route::get('edit',[EducatorController::class, 'show']);
+        Route::post('update',[EducatorController::class, 'update']);
+        Route::get('show',[EducatorController::class, 'show']);
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::post('subjects/save',[MainController::class, 'saveSubjects']);
+        Route::get('subjects',[MainController::class, 'getSubjects']);
     });
     
     Route::prefix('sets')->group(function () {
         Route::get('index',[SetController::class, 'index']);
+    });
+    
+    Route::prefix('subjects')->group(function () {
+        Route::get('show',[SubjectController::class, 'show']);
     });
 
     Route::prefix('remarks')->group(function () {

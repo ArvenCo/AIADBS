@@ -59,7 +59,7 @@ class TestController extends Controller
         $educator_data = DB::table('educators')->where('user_id', $user->id)->get();
         $department_ids =  explode(', ',$educator_data->first()->department_ids);
         $subjects = DB::table('subjects')->where('department_id', $department_ids )->select('name')->get();
-        $courses = explode(', ', $educator_data->first()->subjects);
+        $courses = explode(', ', $educator_data->first()->courses);
         return view('forms.test_create', ['courses' => $courses, 'subjects' => $subjects]);
 
     }

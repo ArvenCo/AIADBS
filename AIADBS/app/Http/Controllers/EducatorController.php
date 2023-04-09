@@ -88,7 +88,7 @@ class EducatorController extends Controller
         try{
             $educator = Educator::leftjoin('users', 'user_id', '=', 'users.id')
             ->where('user_id', '=', $request->id)
-            ->select('educators.id as id', 'email', 'name', 'subjects', 'education_office')->first();
+            ->select('educators.id as id', 'email', 'department_ids', 'name','courses', 'subjects', 'education_office')->first();
             return response()->json($educator, 200);
         }catch(Exception $ex){
             return response()->json($ex, 500);
@@ -101,9 +101,10 @@ class EducatorController extends Controller
      * @param  \App\Models\Educator  $educator
      * @return \Illuminate\Http\Response
      */
-    public function edit(Educator $educator, )
+    public function edit(Educator $educator )
     {
         //
+        
     }
 
     /**
@@ -113,9 +114,21 @@ class EducatorController extends Controller
      * @param  \App\Models\Educator  $educator
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Educator $educator)
+    public function update(Request $request)
     {
         //
+        $educator = Educator::find($request->id);
+        $educator->department_ids = join(', ', $request->department);
+        $educator->courses = join(', ', $request->courses);
+        $educator->education_office = $request->education_office;
+        $saved = $educator->save();
+        if ($saved) {
+            # code...
+            return response()->json(['success'=>'Changes has been Saved'], 200);
+        }else{
+            return response()->json(['success'=>'Error Occur'], 500);
+        }
+       
     }
 
     /**

@@ -218,16 +218,15 @@
                     });
                 });
         }
-
         function getCourses(id) {
              //GET list of subjects by department ID 
-             var subjects = GET(`/courses/show/`, {department_id:id});
+             var subjects = GET(`/courses/show`, {department_id:id});
                 subjects.then(function(data){
                     console.log(data);
                     
                     $('#form-subject div.readonly').remove();
                     $.each(data, function (index, value) { 
-                       console.log(value.name);
+                       console.log(value);
                         const div = `
                             <div class="col-4 readonly">
                                 <div class="input-group">
@@ -271,7 +270,7 @@
                 $('#form-subject input[name="department_id"]').val(id);
 
                 //GET department by ID
-                var department = GET('/department/show/'+id,{});
+                var department = GET('/department/show',{id:id});
                 department.then(function(data){
                     $('#subject-modal-title').html(data.name + ' - Subjects' );
                 });
@@ -324,7 +323,6 @@
             } else {
                 getCourses($('#form-subject input[name="department_id"]').val());
             }
-            
         }
 
         

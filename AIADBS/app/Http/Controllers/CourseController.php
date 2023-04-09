@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -19,7 +20,7 @@ class CourseController extends Controller
             $department_id = $request->department_id;
             $course = Course::whereIn('department_id', $department_id)->get();
             return response()->json($course, 200);
-        }
+        } 
     }
 
     /**
@@ -70,9 +71,11 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show(Course $course, Request $request)
     {
         //
+        $courses  = $course->where('department_id', '=',$request->department_id)->get();
+        return response()->json($courses , 200);
     }
 
     /**
@@ -110,4 +113,7 @@ class CourseController extends Controller
         $course = $course->find($request->id);
         $course->delete();
     }
+
+
+   
 }
