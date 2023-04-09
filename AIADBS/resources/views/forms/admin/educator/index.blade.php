@@ -258,7 +258,6 @@
             data: data,
             dataType: "json",
             success: function (response) {
-                console.log(response);
                 return response;
             }
         });
@@ -292,61 +291,69 @@
         });
     });
 
-    function load_courses(id){
+    function load_courses(id, callback){
         const office = $(`#${id}`).val();
         if(id == "DepEdRadio1" || id == "CHEDRadio1"){
+            const getFunction = GET(`/getfunction/${office}`);
+
+            getFunction.then(function(data){
+                
+                $('#dept-container-edit').empty();
+                for (let i = 0; i < data['departments'].length; i++) {
+                    const value = data['departments'][i];
+                    console.log('loading department');
+                    $('#dept-container-edit').append(`
+                        <div class="dropdown-item checkbox">
+                            <input type="checkbox" id="department${value.id}" name="department[]" value="${value.id}">
+                            <label for="department${value.id}" class="form-check-label">${value.name}</label>
+                        </div>
+                    `);
+                    
+                }
+
+
+                let ids=[];
+                $("#dept-container-edit input:checkbox").on('click',[subjects = data['department_array']],function (e) { 
+                    ids= [];
+                    $('input:checkbox:checked').each (function () { 
+                        ids.push($(this).val());
+                    });
+                    // console.log(ids);
+                    $('#subject-list-edit').empty();
+                    let courses;
+                    courses = GET('/courses/show',{department_id:ids});
+                    
+                    courses.then(function(data) {
+                        
+                        let courseshtml = ``;
+                        for (let j = 0; j < data.length; j++) {
+                            const value = data[j];
+                            let object = value.abbreviation != null ? value.abbreviation : value.name;
+                            $('#subject-list-edit').append(`
+                                <div class="list-group-item border-0 border-bottom">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="courses[]" class="form-check-input" value="${object}" id="${object}">
+                                        <label for="${object}" class="form-check-label ">${object}</label>
+                                    </div>
+                                </div>
+                                `);
+                            
+                        }
+                        
+                    });
+                    
+                });
+                
+                
+                callback();
+            });
             $.ajax({
                 type: "get",
                 url: `/getfunction/${office}`,
                 dataType: "json",
                 success: function (data){
+
                     
-                
-                    
-                    $('#dept-container-edit').empty();
-                    $.each(data['departments'], function(key, value){
-
-                        $('#dept-container-edit').append(`
-                            <div class="dropdown-item checkbox">
-                                <input type="checkbox" id="department${value.id}" name="department[]" value="${value.id}">
-                                <label for="department${value.id}" class="form-check-label">${value.name}</label>
-                            </div>
-                        `);
-                    });
-
-
-                    let ids=[];
-                    $("#dept-container-edit input:checkbox").on('click',[subjects = data['department_array']],function (e) { 
-                        ids= [];
-                        $('input:checkbox:checked').each (function () { 
-                            ids.push($(this).val());
-                        });
-                        // console.log(ids);
-                        $('#subject-list-edit').empty();
-                        let courses;
-                        courses = GET('/courses/show',{department_id:ids});
-                        
-                        courses.then(function(data) {
-                            
-                            let courseshtml = ``;
-                            
-                            for (let j = 0; j < data.length; j++) {
-                                const value = data[j];
-                                let object = value.abbreviation != null ? value.abbreviation : value.name;
-                                $('#subject-list-edit').append(`
-                                    <div class="list-group-item border-0 border-bottom">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="courses[]" class="form-check-input" value="${object}" id="${object}">
-                                            <label for="${object}" class="form-check-label ">${object}</label>
-                                        </div>
-                                    </div>
-                                    `);
-                                
-                            }
-                            
-                        });
-                        
-                    });
                 },
                 error: function(data){
                     console.error(data);
@@ -359,16 +366,18 @@
                 dataType: "json",
                 success: function (data){
                     $('#dept-container').empty();
-                    $.each(data['departments'], function(key, value){
+                    for (let i = 0; i < data['departments'].length; i++) {
+                        const value = data['departments'][i];
+                        console.log('loading department');
                         $('#dept-container').append(`
                             <div class="dropdown-item checkbox">
                                 <input type="checkbox" id="department${value.id}" name="department[]" value="${value.id}">
                                 <label for="department${value.id}" class="form-check-label">${value.name}</label>
                             </div>
                         `);
-                    });
-
-
+                        
+                    }
+                    
                     let ids=[];
                     $("#dept-container input:checkbox").on('click',[subjects = data['department_array']],function (e) { 
                         ids= [];
@@ -396,6 +405,7 @@
                                     </div>
                                 `);
                                 
+                                
                             }
                             
                         });
@@ -408,6 +418,8 @@
                 
             });       
         }
+        
+        callback();
     }
     
     $('.dropdown-menu').on("click.bs.dropdown", function (e) {
@@ -442,17 +454,16 @@
                 `);
                 
             }
-        });
-        setTimeout(() => {
-            let course = courses.split(', ');
+            let edu_course = courses.split(', ');
             let checkCourse = $('#subject-list-edit input:checkbox');
             for (let i = 0; i < checkCourse.length; i++) {
                 const element = checkCourse[i];
-                if(course.includes(element.value)) {
+                if(edu_course.includes(element.value)) {
                     element.checked = true;
                 }
             }
-        }, 500);
+        });
+        
     }
 
 
@@ -475,16 +486,20 @@
             if(data.education_office == 'College'){
                 
                 $('#CHEDRadio1').prop('checked', true);
-                load_courses('CHEDRadio1');
-                
+                load_courses('CHEDRadio1', function() {
+                    check_course(data.department_ids, data.courses);
+                    console.log('checked');
+                });
+
             }else{
                 $('#DepEdRadio1').prop('checked', true);
-                load_courses('DepEdRadio1');
+                load_courses('DepEdRadio1',  function() {
+                    check_course(data.department_ids, data.courses);
+                    console.log('checked');
+                });
                 
             }
-            setTimeout(() => {
-                check_course(data.department_ids, data.courses)
-            }, 500);
+            
             
         });
         $('#updateModal').modal('toggle');
@@ -504,7 +519,18 @@
             });
         });
     }
+    function first(callback){
+        console.log('first called');
+        callback();
+    }
+
+    function second(){
+        console.log('second called');
+    }
+
     $(document).ready(function(){
+
+        first(function(){ second(); });
         $('#add-name').on("keypress blur", function(){
             var array  =  $('#add-name').val().split(' ');
             if (array.length > 0) {
@@ -525,7 +551,7 @@
         $('input[type="radio"]').on('change', function(){
             var office = $('input[name="education_office"]:checked').val();
             // console.log(this.id);
-            load_courses(this.id);
+            load_courses(this.id, function(){});
         });
     });
 </script>

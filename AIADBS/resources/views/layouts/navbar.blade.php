@@ -202,8 +202,7 @@
                 
                 
                 $('#update-form').submit(function (e) { 
-                    e.preventDefault();
-                    
+                    e.preventDefault(); 
                 });
                 
                 $('#password').prop('disabled', true);
