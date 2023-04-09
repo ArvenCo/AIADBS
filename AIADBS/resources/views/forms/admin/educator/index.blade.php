@@ -427,8 +427,8 @@
     });
 
     function check_course(ids, courses){
-        const id = ids.split(", ");
         
+        const id = ids.split(", ");
         let check = $('#dept-container-edit input:checkbox');
         for (let i = 0; i < check.length; i++) {
             const element = check[i];
@@ -452,7 +452,6 @@
                         </div>
                     </div>
                 `);
-                
             }
             let edu_course = courses.split(', ');
             let checkCourse = $('#subject-list-edit input:checkbox');
