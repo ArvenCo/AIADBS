@@ -79,7 +79,8 @@ Route::middleware(['auth'])->group(function(){
     Route::prefix('courses')->group(function () {
 
        
-        Route::get('show',[CourseController::class,'index']);
+        Route::get('index',[CourseController::class,'index']);
+        Route::get('show',[CourseController::class,'show']);
         Route::post('store',[CourseController::class,'store']);
         Route::post('destroy',[CourseController::class,'destroy']);
     });

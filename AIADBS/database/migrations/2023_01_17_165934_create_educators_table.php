@@ -42,6 +42,69 @@ class CreateEducatorsTable extends Migration
         // );
 
         $data = array(
+            
+            'SHS: Senior High School' => array(
+                'courses' => array(
+                    'ABM: Accountancy, Business and Management',
+                    'STEM: Science, Technology, Engineering and Mathematics',
+                    'ICT: Information, Communication and Technology',
+                    'GAS: General Academic Strand',
+                    'HUMSS: Humanities and Social Sciences'
+                ),
+                'education_office' => 'Basic Ed',
+                'subjects' => array(
+                    'ABMSubj sample1', 
+                    'ABMSubj sample2', 
+                    'ABMSubj sample3', 
+                    'STEMSubj sample1', 
+                    'STEMSubj sample2', 
+                    'STEMSubj sample3',
+                    'ICTSubj sample1',
+                    'GAS sample'
+                    )
+                
+               
+            ),
+            'JHS: Junior High School' => array(
+                
+                'courses' => array(
+                    'G10: Grade 10',
+                    'G9: Grade 9',
+                    'G8: Grade 8',
+                    'G7: Grade 7'
+                    
+                ),
+                'education_office' => 'Basic Ed',
+                'subjects' => array(
+                    'subject sample1',
+                    'subject sample2',
+                    'sub sample3'
+                )
+            ),
+            'Elem: Elementary' => array(
+                
+                'courses' => array(
+                    'G6: Grade 6',
+                    'G5: Grade 5',
+                    'G4: Grade 4',
+                    'G3: Grade 3',
+                    'G2: Grade 2',
+                    'G1: Grade 1',
+                    'K: Kindergarten'
+                    
+                ),
+                'education_office' => 'Basic Ed',
+                'subjects' => array(
+                    'English',
+                    'Filipino',
+                    'Math',
+                    'TLE',
+                    'Science',
+                )
+            ),
+
+
+
             'CCIS:College of Computing and Information Science' => array(
                 'courses' => array(
                     'BSIT: Bachelor of Science in Information Technology',

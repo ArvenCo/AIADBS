@@ -63,7 +63,7 @@ class DepartmentController extends Controller
     {
         $departments = Department::leftjoin('trashes', 'trashes.department_id','=', 'departments.id')
         ->whereNull('trashes.id')
-        ->select('departments.id AS id', 'name', 'abbreviation')
+        ->select('departments.id AS id', 'name', 'abbreviation', 'education_office')
         ->get();
        
         

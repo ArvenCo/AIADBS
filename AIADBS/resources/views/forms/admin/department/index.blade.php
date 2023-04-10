@@ -17,6 +17,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Department</th>
+                        <th>Office</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -29,6 +30,10 @@
                         <td data-bs-toggle="modal" data-bs-target="#modal{{$department->id}}">
                             {{$department->name}} - {{$department->abbreviation}}
                         </td>
+                        <td style="width: 10% !important; white-space: nowrap !important;"> 
+                            {{$department->education_office}}
+                        </td>
+
                         <td style="width: 1% !important; white-space: nowrap !important;">
                             <div class="dropdown ">
                                 <a href="#" class="btn btn-outlined-secondary dropdown-toggle px-5 " 
@@ -161,7 +166,7 @@
             return $.ajax({
                 type: "GET",
                 url: url,
-                data:data,
+                data: data,
                 dataType: "json",
                 success: function (response) {
                     return response;
@@ -220,28 +225,30 @@
         }
         function getCourses(id) {
              //GET list of subjects by department ID 
-             var subjects = GET(`/courses/show`, {department_id:id});
-                subjects.then(function(data){
-                    console.log(data);
-                    
-                    $('#form-subject div.readonly').remove();
-                    $.each(data, function (index, value) { 
-                       console.log(value);
-                        const div = `
-                            <div class="col-4 readonly">
-                                <div class="input-group">
-                                    <input type="text" readonly class="form-control" name="" value="${value.name}" id="">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-danger" onclick="trashIt('courses',${value.id})">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
+             
+            let courses = GET('/courses/show',{department_id:1});
+
+            courses.then(function(data){
+                console.log(data);
+                
+                $('#form-subject div.readonly').remove();
+                $.each(data, function (index, value) { 
+                    console.log(value);
+                    const div = `
+                        <div class="col-4 readonly">
+                            <div class="input-group">
+                                <input type="text" readonly class="form-control" name="" value="${value.name}" id="">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-danger" onclick="trashIt('courses',${value.id})">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
                                 </div>
                             </div>
-                        `
-                        $('#form-subject>div').append(div);
-                    });
+                        </div>
+                    `
+                    $('#form-subject>div').append(div);
                 });
+            });
         }
 
         function courseModal(id){
@@ -282,6 +289,7 @@
             $('#subject-modal').modal('toggle');
         }
         
+
         
         function getDepartment(id) {
             var department  = GET('/department/show', {id:id});

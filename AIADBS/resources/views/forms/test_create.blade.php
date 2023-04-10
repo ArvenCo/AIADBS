@@ -223,7 +223,7 @@
         
         const subjects = POST('/user/subjects/save', $('#user-subjects').serialize());
         subjects.then(function (data) {
-          alert(data)
+          location.reload();
         })
 
         

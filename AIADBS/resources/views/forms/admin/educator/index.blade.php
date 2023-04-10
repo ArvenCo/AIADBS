@@ -321,7 +321,7 @@
                     // console.log(ids);
                     $('#subject-list-edit').empty();
                     let courses;
-                    courses = GET('/courses/show',{department_id:ids});
+                    courses = GET('/courses/index',{department_id:ids});
                     
                     courses.then(function(data) {
                         
@@ -387,7 +387,7 @@
                         // console.log(ids);
                         $('#subject-list').empty();
                         let courses;
-                        courses = GET('/courses/show',{department_id:ids});
+                        courses = GET('/courses/index',{department_id:ids});
                         
                         courses.then(function(data) {
                             
@@ -427,8 +427,8 @@
     });
 
     function check_course(ids, courses){
-        
         const id = ids.split(", ");
+
         let check = $('#dept-container-edit input:checkbox');
         for (let i = 0; i < check.length; i++) {
             const element = check[i];
@@ -437,7 +437,7 @@
             }
         }
         
-        let course = GET('/courses/show',{department_id:id});
+        let course = GET('/courses/index',{department_id:id});
         course.then(function(data){
             
             $('#subject-list-edit').empty();
