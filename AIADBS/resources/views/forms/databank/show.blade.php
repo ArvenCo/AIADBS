@@ -163,7 +163,7 @@
             
         });
         $('#selector').change(function (e) { 
-            e.preventDefault();
+           
             
             searchItemBy($('#search').val(), function (data){
                 var i =1;
@@ -192,6 +192,7 @@
                         j+=1;
                     }
                 });
+                // e.preventDefault();
             });
         });
         

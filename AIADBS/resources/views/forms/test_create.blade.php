@@ -223,6 +223,7 @@
         
         const subjects = POST('/user/subjects/save', $('#user-subjects').serialize());
         subjects.then(function (data) {
+          
           location.reload();
         })
 
@@ -245,7 +246,7 @@
         const subjects = GET('/subjects/show',{department_id: department_ids});
         subjects.then(function (data){
           console.log(data);
-          $('#user-subjects').empty();
+          $('#user-subjects .row').empty();
           let html = ``;
           $.each(data, function (index, value){ 
               html += 
@@ -257,15 +258,16 @@
                 </div>`;
              
           });
-          $('#user-subjects').html(html);
+          $('#user-subjects .row').html(html);
 
           const userSubjects = GET('/educator/show',{id : $('#user_id').val()});
           userSubjects.then(function (data) {
             $('select#subject').empty();
             $('select#subject').html('<option value="" hidden selected>Choose a Subject</option>');
             $.each(data.subjects.split(', '), function (index, value) { 
+              console.log(value);
               $('select#subject').append(`
-                <option value=${value}>${value}</option>
+                <option value="${value}">${value}</option>
               `);
 
               $("input[name='subjects[]']").each(function (index, element) {
