@@ -228,6 +228,7 @@ class TestController extends Controller
     {
         $lines = explode("\n", $string);
         $array = [];
+        $i = 0;
         foreach ($lines as $line) {
 
             list($number, $question) = explode('.', $line, 2);
@@ -238,7 +239,7 @@ class TestController extends Controller
             if (is_numeric($number)) {
                 $question = trim($question);
                 $number = intval($number);
-                $array[$number - 1] = $question;
+                $array[$i] = $question;
 
             } else {
                 $indexArray = count($array) > 0 ? max(array_keys($array)) : 0;
@@ -246,6 +247,7 @@ class TestController extends Controller
                 $array[$indexArray] = $inArray . "\n" . $line;
                 continue;
             }
+            $i += 1;
         }
         return $array;
     }
